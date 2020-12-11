@@ -1,9 +1,11 @@
 """Artist ViewSet and Serializers"""
 from django.core.exceptions import ValidationError
+from rest_framework import status, serializers
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework import status, serializers
+from rest_framework.decorators import permission_classes
 from rmmapi.models import Artist, Rater
+from rmmapi.permissions import MustBeCreatorToModify
 
 class ArtistSerializer(serializers.ModelSerializer):
     """JSON serializer for artist"""
@@ -12,6 +14,8 @@ class ArtistSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'founded_year', 'description')
 
 class ArtistViewSet(ViewSet):
+    permission_classes = (MustBeCreatorToModify, )
+
     def create(self, request):
         """POST a new artist"""
         missing_keys = self._get_missing_keys()
@@ -51,7 +55,17 @@ class ArtistViewSet(ViewSet):
 
         serializer = ArtistSerializer(artist)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+    def update(self, request, pk=None):
+        """PUT an artist"""
+        try:
+            artist = Artist.objects.get(pk=pk)
+        except Artist.DoesNotExist:
+            return Response(
+                {'message': 'No artist was found with that ID.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
     def destroy(self, request, pk=None):
         """DELETE an artist"""
         try:
@@ -61,17 +75,12 @@ class ArtistViewSet(ViewSet):
                 {'message': 'No artist was found with that ID.'},
                 status=status.HTTP_404_NOT_FOUND
             )
-
-        rater = Rater.objects.get(user=request.auth.user)
-        if artist.creator != rater:
-            return Response(
-                {'message': 'An artist can only be deleted by its creator.'},
-                status=status.HTTP_403_FORBIDDEN
-            )
+        
+        self.check_object_permissions(request, artist.creator)
 
         artist.delete()
         return Response({}, status=status.HTTP_204_NO_CONTENT)
-
+    
     def _get_missing_keys(self):
         """Given the request.data for a POST/PUT request, return a list containing the
         string values of all required keys that were not found in the request body"""
