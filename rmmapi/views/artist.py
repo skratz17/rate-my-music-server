@@ -51,6 +51,26 @@ class ArtistViewSet(ViewSet):
 
         serializer = ArtistSerializer(artist)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def destroy(self, request, pk=None):
+        """DELETE an artist"""
+        try:
+            artist = Artist.objects.get(pk=pk)
+        except Artist.DoesNotExist:
+            return Response(
+                {'message': 'No artist was found with that ID.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        rater = Rater.objects.get(user=request.auth.user)
+        if artist.creator != rater:
+            return Response(
+                {'message': 'An artist can only be deleted by its creator.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        artist.delete()
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
     def _get_missing_keys(self):
         """Given the request.data for a POST/PUT request, return a list containing the
