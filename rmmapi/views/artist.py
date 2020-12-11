@@ -5,6 +5,12 @@ from rest_framework.response import Response
 from rest_framework import status, serializers
 from rmmapi.models import Artist, Rater
 
+class ArtistSerializer(serializers.ModelSerializer):
+    """JSON serializer for artist"""
+    class Meta:
+        model = Artist
+        fields = ('id', 'name', 'founded_year', 'description')
+
 class ArtistViewSet(ViewSet):
     def create(self, request):
         """POST a new artist"""
@@ -29,7 +35,9 @@ class ArtistViewSet(ViewSet):
         except ValidationError as ex:
             return Response({ "message": ex.message }, status=status.HTTP_400_BAD_REQUEST)
         
-        return Response({}, status=status.HTTP_201_CREATED)
+        serializer = ArtistSerializer(artist)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def _get_missing_keys(self):
         """Given the request.data for a POST/PUT request, return a list containing the
