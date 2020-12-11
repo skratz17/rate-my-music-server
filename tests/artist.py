@@ -33,5 +33,5 @@ class ArtistTests(APITestCase):
         created_artist = json.loads(response.content)
         self.assertEqual(created_artist['id'], 1)
         self.assertEqual(created_artist['name'], 'The Magnetic Fields')
-        self.assertEqual(created_artist['founded_year'], 1996)
+        self.assertEqual(created_artist['founded_year'], 1990)
         self.assertEqual(created_artist['description'], 'An amazing band.')

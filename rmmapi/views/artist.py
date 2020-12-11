@@ -26,7 +26,7 @@ class ArtistViewSet(ViewSet):
         artist = Artist(
             name=request.data['name'],
             description=request.data['description'],
-            founded_year=request.data['year'],
+            founded_year=request.data['founded_year'],
             creator=rater
         )
 
