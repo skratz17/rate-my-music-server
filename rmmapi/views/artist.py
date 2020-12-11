@@ -5,7 +5,6 @@ from rest_framework import status, serializers
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rmmapi.models import Artist, Rater
-from rmmapi.permissions import MustBeCreatorToModify
 
 class ArtistSerializer(serializers.ModelSerializer):
     """JSON serializer for artist"""
@@ -14,8 +13,6 @@ class ArtistSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'founded_year', 'description')
 
 class ArtistViewSet(ViewSet):
-    permission_classes = (MustBeCreatorToModify, )
-
     def create(self, request):
         """POST a new artist"""
         missing_keys = self._get_missing_keys()
