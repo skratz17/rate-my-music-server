@@ -1,0 +1,16 @@
+[
+  {
+    "model": "rmmapi.genre",
+    "pk": 1,
+    "fields": {
+      "name": "Indie Pop"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 2,
+    "fields": {
+      "name": "Indie Folk"
+    }
+  }
+]

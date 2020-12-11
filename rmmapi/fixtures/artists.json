@@ -1,0 +1,23 @@
+[
+  {
+    "model": "rmmapi.artist",
+    "pk": 1,
+    "fields": {
+      "name": "KoeeoaddiThere",
+      "description": "Probably the best indie artist of all time.",
+      "founded_year": "2012-01-01",
+      "creator_id": 2
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 2,
+    "fields": {
+      "name": "The Magnetic Fields",
+      "description": "Actually way better than KT.",
+      "founded_year": "1990-01-01",
+      "creator_id": 3
+    }
+  }
+]
