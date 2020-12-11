@@ -6,7 +6,7 @@
       "creator_id": 2,
       "artist_id": 1,
       "name": "Half-Life",
-      "year": "2014-01-01",
+      "year": 2014,
       "created_at": "2020-10-31T12:00:00Z"
     }
   },
@@ -17,7 +17,7 @@
       "creator_id": 2,
       "artist_id": 1,
       "name": "Later On",
-      "year": "2014-01-01",
+      "year": 2014,
       "created_at": "2020-11-01T12:00:00Z"
     }
   },
@@ -28,7 +28,7 @@
       "creator_id": 3,
       "artist_id": 2,
       "name": "Save a Secret for the Moon",
-      "year": "1996-01-01",
+      "year": 1996,
       "created_at": "2020-11-15T12:00:00Z"
     }
   },
@@ -39,7 +39,7 @@
       "creator_id": 3,
       "artist_id": 2,
       "name": "You and Me and the Moon",
-      "year": "1996-01-01",
+      "year": 1996,
       "created_at": "2020-11-16T12:00:00Z"
     }
   }
