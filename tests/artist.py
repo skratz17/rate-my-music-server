@@ -35,3 +35,39 @@ class ArtistTests(APITestCase):
         self.assertEqual(created_artist['name'], 'The Magnetic Fields')
         self.assertEqual(created_artist['founded_year'], 1990)
         self.assertEqual(created_artist['description'], 'An amazing band.')
+
+    def test_create_artist_missing_field(self):
+        """Create an artist with missing required field"""
+        # missing description field
+        data = {
+            'name': 'The Magnetic Fields',
+            'founded_year': 1990
+        }
+
+        response = self.client.post('/artists', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error_message = json.loads(response.content)
+        self.assertEqual(error_message['message'], 'Request body is missing the following required properties: description.')
+
+    def test_create_artist_invalid_year(self):
+        """Create an artist with an invalid year value"""
+        data = {
+            'name': 'The Magnetic Fields',
+            'founded_year': 'aosidj',
+            'description': 'Such a good band.'
+        }
+
+        response = self.client.post('/artists', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_artist_invalid_name(self):
+        """Create an artist with an overlong name value"""
+        data = {
+            'name': 'The Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic FieldsThe Magnetic Fields',
+            'founded_year': 'aosidj',
+            'description': 'Such a good band.'
+        }
+
+        response = self.client.post('/artists', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

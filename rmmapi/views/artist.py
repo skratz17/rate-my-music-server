@@ -17,7 +17,7 @@ class ArtistViewSet(ViewSet):
         missing_keys = self._get_missing_keys()
         if len(missing_keys) > 0:
             return Response(
-                { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}"},
+                { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -33,7 +33,7 @@ class ArtistViewSet(ViewSet):
         try:
             artist.save()
         except ValidationError as ex:
-            return Response({ "message": ex.message }, status=status.HTTP_400_BAD_REQUEST)
+            return Response({ "message": ex.args[0] }, status=status.HTTP_400_BAD_REQUEST)
         
         serializer = ArtistSerializer(artist)
 
