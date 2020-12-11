@@ -1,4 +1,5 @@
 """Artist ViewSet and Serializers"""
+from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 from rest_framework import status, serializers
 from rest_framework.viewsets import ViewSet
@@ -45,26 +46,14 @@ class ArtistViewSet(ViewSet):
 
     def retrieve(self, request, pk=None):
         """GET an artist"""
-        try:
-            artist = Artist.objects.get(pk=pk)
-        except Artist.DoesNotExist:
-            return Response(
-                {'message': 'No artist was found with that ID.'},
-                status=status.HTTP_404_NOT_FOUND
-            )
+        artist = get_object_or_404(Artist, pk=pk)
 
         serializer = ArtistSerializer(artist)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None):
         """PUT an artist"""
-        try:
-            artist = Artist.objects.get(pk=pk)
-        except Artist.DoesNotExist:
-            return Response(
-                {'message': 'No artist was found with that ID.'},
-                status=status.HTTP_404_NOT_FOUND
-            )
+        artist = get_object_or_404(Artist, pk=pk)
 
         self.check_object_permissions(request, artist.creator)
 
@@ -89,13 +78,7 @@ class ArtistViewSet(ViewSet):
 
     def destroy(self, request, pk=None):
         """DELETE an artist"""
-        try:
-            artist = Artist.objects.get(pk=pk)
-        except Artist.DoesNotExist:
-            return Response(
-                {'message': 'No artist was found with that ID.'},
-                status=status.HTTP_404_NOT_FOUND
-            )
+        artist = get_object_or_404(Artist, pk=pk)
         
         self.check_object_permissions(request, artist.creator)
 
