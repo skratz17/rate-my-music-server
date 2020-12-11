@@ -71,3 +71,19 @@ class ArtistTests(APITestCase):
 
         response = self.client.post('/artists', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_get_artist(self):
+        self.test_create_artist()
+
+        response = self.client.get('/artists/1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        artist = json.loads(response.content)
+        self.assertEqual(artist['id'], 1)
+        self.assertEqual(artist['name'], 'The Magnetic Fields')
+        self.assertEqual(artist['founded_year'], 1990)
+        self.assertEqual(artist['description'], 'An amazing band.')
+
+    def test_get_artist_invalid_id(self):
+        response = self.client.get('/artists/1')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

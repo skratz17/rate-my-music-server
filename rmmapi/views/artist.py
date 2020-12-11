@@ -39,6 +39,19 @@ class ArtistViewSet(ViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    def retrieve(self, request, pk=None):
+        """GET an artist"""
+        try:
+            artist = Artist.objects.get(pk=pk)
+        except Artist.DoesNotExist:
+            return Response(
+                {'message': 'No artist was found with that ID.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = ArtistSerializer(artist)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def _get_missing_keys(self):
         """Given the request.data for a POST/PUT request, return a list containing the
         string values of all required keys that were not found in the request body"""
