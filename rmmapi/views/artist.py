@@ -4,7 +4,6 @@ from django.core.exceptions import ValidationError
 from rest_framework import status, serializers
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.decorators import permission_classes
 from rmmapi.models import Artist, Rater
 from rmmapi.permissions import MustBeCreatorToModify
 
