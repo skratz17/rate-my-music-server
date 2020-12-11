@@ -66,6 +66,27 @@ class ArtistViewSet(ViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+        self.check_object_permissions(request, artist.creator)
+
+        missing_keys = self._get_missing_keys()
+        if len(missing_keys) > 0:
+            return Response(
+                { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        artist.name = request.data['name']
+        artist.founded_year = request.data['founded_year']
+        artist.description = request.data['description']
+
+        try:
+            artist.save()
+        except ValidationError as ex:
+            return Response({ "message": ex.args[0] }, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = ArtistSerializer(artist)
+        return Response(serializer.data)
+
     def destroy(self, request, pk=None):
         """DELETE an artist"""
         try:
