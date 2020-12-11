@@ -101,6 +101,18 @@ class ArtistViewSet(ViewSet):
 
         artist.delete()
         return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+    def list(self, request):
+        """GET all artists"""
+        artists = Artist.objects.all()
+
+        q = request.query_params.get('q', None)
+
+        if q is not None:
+            artists = self._filter_by_search_term(artists, q)
+
+        serializer = ArtistSerializer(artists, many=True)
+        return Response(serializer.data)
     
     def _get_missing_keys(self):
         """Given the request.data for a POST/PUT request, return a list containing the
@@ -110,3 +122,7 @@ class ArtistViewSet(ViewSet):
         ]
 
         return [ key for key in REQUIRED_KEYS if not key in self.request.data ]
+
+    def _filter_by_search_term(self, artists, q):
+        """Given an artists QuerySet, return it filtered by artist name containing q"""
+        return artists.filter(name__icontains=q)
