@@ -1,0 +1,42 @@
+[
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 1,
+    "fields": {
+      "song_id": 1,
+      "genre_id": 1
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 2,
+    "fields": {
+      "song_id": 2,
+      "genre_id": 2
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 3,
+    "fields": {
+      "song_id": 2,
+      "genre_id": 1
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 4,
+    "fields": {
+      "song_id": 3,
+      "genre_id": 1
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 5,
+    "fields": {
+      "song_id": 4,
+      "genre_id": 1
+    }
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "model": "rmmapi.songsource",
+    "pk": 1,
+    "fields": {
+      "song_id": 1,
+      "url": "https://soundcloud.com/koeeoaddithere/half-life",
+      "service": "Soundcloud",
+      "isPrimary": true
+    }
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 2,
+    "fields": {
+      "song_id": 2,
+      "url": "https://soundcloud.com/koeeoaddithere/later-on",
+      "service": "Soundcloud",
+      "isPrimary": true
+    }
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 3,
+    "fields": {
+      "song_id": 3,
+      "url": "https://www.youtube.com/watch?v=4rk_9cYOp8A",
+      "service": "YouTube",
+      "isPrimary": true
+    }
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 4,
+    "fields": {
+      "song_id": 4,
+      "url": "https://www.youtube.com/watch?v=r1aLwEQc6LM",
+      "service": "YouTube",
+      "isPrimary": true
+    }
+  }
+]

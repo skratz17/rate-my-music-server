@@ -1,0 +1,28 @@
+[
+  {
+    "model": "rmmapi.rater",
+    "pk": 1,
+    "fields": {
+      "user_id": 1,
+      "bio": "This user represents a user who has deleted their account."
+    }
+  },
+
+  {
+    "model": "rmmapi.rater",
+    "pk": 2,
+    "fields": {
+      "user_id": 2,
+      "bio": "Just a cool boi."
+    }
+  },
+
+  {
+    "model": "rmmapi.rater",
+    "pk": 3,
+    "fields": {
+      "user_id": 3,
+      "bio": "Just a test boi."
+    }
+  }
+]

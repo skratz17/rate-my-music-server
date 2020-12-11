@@ -1,0 +1,10 @@
+[
+  {
+    "model": "rmmapi.listfavorite",
+    "pk": 1,
+    "fields": {
+      "list_id": 1,
+      "rater_id": 3
+    }
+  }
+]
