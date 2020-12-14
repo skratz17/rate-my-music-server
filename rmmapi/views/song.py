@@ -175,6 +175,14 @@ class SongViewSet(ViewSet):
         
         serializer = SongSerializer(song)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, pk=None):
+        song = get_object_or_404(Song, pk=pk)
+
+        self.check_object_permissions(request, song.creator)
+
+        song.delete()
+        return Response({}, status.HTTP_204_NO_CONTENT)
         
     def _get_missing_keys(self):
         """Given the request.data for a POST/PUT request, return a list containing the
