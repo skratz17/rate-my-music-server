@@ -39,6 +39,7 @@ class SongTests(APITestCase):
         # missing artistId
         data = {
             'name': 'Save a Secret for the Moon',
+            'year': 1996,
             'genreIds': [ 1 ],
             'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A' }]
         }
@@ -52,6 +53,7 @@ class SongTests(APITestCase):
     def test_create_song_invalid_artist_id(self):
         data = {
             'name': 'Save a Secret for the Moon',
+            'year': 1996,
             'artistId': 666,
             'genreIds': [ 1 ],
             'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A' }]
@@ -66,6 +68,7 @@ class SongTests(APITestCase):
     def test_create_song_empty_genre_ids(self):
         data = {
             'name': 'Save a Secret for the Moon',
+            'year': 1996,
             'artistId': 1,
             'genreIds': [ ],
             'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A' }]
@@ -80,6 +83,7 @@ class SongTests(APITestCase):
     def test_create_song_invalid_genre_id(self):
         data = {
             'name': 'Save a Secret for the Moon',
+            'year': 1996,
             'artistId': 1,
             'genreIds': [ 1, 666 ],
             'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A' }]
@@ -94,6 +98,7 @@ class SongTests(APITestCase):
     def test_create_song_empty_sources(self):
         data = {
             'name': 'Save a Secret for the Moon',
+            'year': 1996,
             'artistId': 1,
             'genreIds': [ 1 ],
             'sources': [ ]
@@ -109,6 +114,7 @@ class SongTests(APITestCase):
         # using `platform` key instead of `service` for source
         data = {
             'name': 'Save a Secret for the Moon',
+            'year': 1996,
             'artistId': 1,
             'genreIds': [ 1 ],
             'sources': [ { 'platform': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A' }]
@@ -119,3 +125,23 @@ class SongTests(APITestCase):
 
         error_message = json.loads(response.content)
         self.assertEqual(error_message['message'], "All sources must contain `service` and `url` properties.")
+
+    def test_create_valid_song(self):
+        data = {
+            'name': 'Save a Secret for the Moon',
+            'year': 1996,
+            'artistId': 1,
+            'genreIds': [ 1 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A' }]
+        }
+
+        response = self.client.post('/songs', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        song = json.loads(response.content)
+        self.assertEqual(song['id'], 1)
+        self.assertEqual(song['name'], 'Save a Secret for the Moon')
+        self.assertEqual(song['year'], 1996)
+        self.assertEqual(song['artist']['name'], 'The Magnetic Fields')
+        self.assertEqual(song['genres'][0]['genre']['name'], 'Indie Pop')
+        self.assertEqual(song['sources'][0]['service'], 'YouTube')
