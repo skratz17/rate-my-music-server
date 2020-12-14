@@ -1,5 +1,7 @@
 """Song ViewSet and Serializers"""
 from rmmapi.views.genre import GenreSerializer
+from django.db.models import Q
+from django.db.models.functions import Lower
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.core.exceptions import ValidationError
@@ -177,12 +179,60 @@ class SongViewSet(ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk=None):
+        """DELETE a song by id"""
         song = get_object_or_404(Song, pk=pk)
 
         self.check_object_permissions(request, song.creator)
 
         song.delete()
         return Response({}, status.HTTP_204_NO_CONTENT)
+
+    def list(self, request):
+        """GET all songs with optional query string parameters:
+            startYear - start year of songs to return results for
+            endYear - end year of songs to return results for
+            genres - comma-separated list of genre ids to return results for
+            artist - id of artist to return results for
+            q - search term to search song or artist names
+            orderBy - field (one of: name, artist, year) to sort results by
+            direction - direction to sort results in (one of: asc, desc)
+        """
+        songs = Song.objects.all()
+
+        startYear = request.query_params.get('startYear', None)
+        endYear = request.query_params.get('endYear', None)
+        genres = request.query_params.get('genres', None)
+        artist = request.query_params.get('artist', None)
+        q = request.query_params.get('q', None)
+
+        if startYear is not None:
+            try:
+                startYear = int(startYear)
+            except ValueError:
+                startYear = 0
+            songs = songs.filter(year__gte=startYear)
+        
+        if endYear is not None:
+            try:
+                endYear = int(endYear)
+            except ValueError:
+                endYear = 3000 
+            songs = songs.filter(year__lte=endYear)
+        
+        if genres is not None:
+            genres = genres.split(',')
+            songs = songs.filter(genres__genre_id__in=genres).distinct()
+
+        if artist is not None:
+            songs = songs.filter(artist_id=artist)
+
+        if q is not None:
+            songs = songs.filter(Q(artist__name__icontains=q) | Q(name__icontains=q))
+
+        songs = self._sort_by_query_string_param(songs)
+
+        serializer = SongSerializer(songs, many=True)
+        return Response(serializer.data)
         
     def _get_missing_keys(self):
         """Given the request.data for a POST/PUT request, return a list containing the
@@ -226,3 +276,29 @@ class SongViewSet(ViewSet):
             return "There must be one and only one primary source."
 
         return False
+
+    def _sort_by_query_string_param(self, songs):
+        """Sort songs QuerySet by `orderBy` query string param"""
+        orderable_fields_dict = {
+            'name': Lower('name'),
+            'artist': Lower('artist__name'),
+            'year': 'year'
+        }
+
+        order_by = self.request.query_params.get('orderBy', None)
+
+        if order_by is not None and order_by in orderable_fields_dict:
+            order_field = orderable_fields_dict[order_by]
+
+            # sort in direction indicated by `direction` query string param
+            # or ascending, by default
+            direction = self.request.query_params.get('direction', 'asc')
+            if direction == 'desc':
+                if order_by == 'year':
+                    order_field = '-' + order_field
+                else:
+                    order_field = order_field.desc()
+
+            songs = songs.order_by(order_field)
+
+        return songs

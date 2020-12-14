@@ -304,3 +304,185 @@ class SongTests(APITestCase):
 
         response = self.client.delete('/songs/1')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_get_all_songs(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 2)
+        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs[1]['name'], 'Baby')
+
+    def test_get_all_songs_with_start_year(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?startYear=1997')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 1)
+        self.assertEqual(songs[0]['name'], 'Baby')
+
+    def test_get_all_songs_with_end_year(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?endYear=1996')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 1)
+        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
+
+    def test_get_all_songs_multiple_genres(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?genres=1,2')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 2)
+        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs[1]['name'], 'Baby')
+
+    def test_get_all_songs_single_genre(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?genres=2')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 1)
+        self.assertEqual(songs[0]['name'], 'Baby')
+
+    def test_get_all_songs_by_artist(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?artist=2')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 1)
+        self.assertEqual(songs[0]['name'], 'Baby')
+
+    def test_get_all_songs_by_song_name_search(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?q=baby')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 1)
+        self.assertEqual(songs[0]['name'], 'Baby')
+
+    def test_get_all_songs_by_artist_name_search(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?q=magn')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 1)
+        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
+
+    def test_get_all_songs_ordered_by_year_asc(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?orderBy=year')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 2)
+        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs[1]['name'], 'Baby')
+
+    def test_get_all_songs_ordered_by_year_desc(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?orderBy=year&direction=desc')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 2)
+        self.assertEqual(songs[0]['name'], 'Baby')
+        self.assertEqual(songs[1]['name'], 'Save a Secret for the Moon')
+
+    def test_get_all_songs_ordered_by_song_name(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?orderBy=name')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 2)
+        self.assertEqual(songs[0]['name'], 'Baby')
+        self.assertEqual(songs[1]['name'], 'Save a Secret for the Moon')
+
+    def test_get_all_songs_ordered_by_song_name_desc(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?orderBy=name&direction=desc')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 2)
+        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs[1]['name'], 'Baby')
+
+    def test_get_all_songs_ordered_by_artist_name(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?orderBy=artist')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 2)
+        self.assertEqual(songs[0]['name'], 'Baby')
+        self.assertEqual(songs[1]['name'], 'Save a Secret for the Moon')
+
+    def test_get_all_songs_ordered_by_artist_name_desc(self):
+        self.test_create_valid_song()
+        self._create_second_valid_song()
+
+        response = self.client.get('/songs?orderBy=artist&direction=desc')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 2)
+        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs[1]['name'], 'Baby')
+
+    def _create_second_valid_song(self):
+        artist = Artist(
+            name="of Montreal",
+            description="An amazing band.",
+            founded_year=1996,
+            creator_id=1
+        )
+
+        artist.save()
+
+        data = {
+            'name': 'Baby',
+            'year': 1997,
+            'artistId': 2,
+            'genreIds': [ 1, 2 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=pPBRwEmSESw', 'isPrimary': True }]
+        }
+        response = self.client.post('/songs', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
