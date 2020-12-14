@@ -77,7 +77,7 @@ class SongViewSet(ViewSet):
                 song=song,
                 service=source["service"],
                 url=source["url"],
-                isPrimary=(source == sources[0])
+                isPrimary=source['isPrimary']
             )
 
             try:
@@ -95,6 +95,87 @@ class SongViewSet(ViewSet):
         serializer = SongSerializer(song)
         return Response(serializer.data)
 
+    def update(self, request, pk=None):
+        """PUT a song"""
+        song = get_object_or_404(Song, pk=pk)
+
+        self.check_object_permissions(request, song.creator)
+
+        missing_keys = self._get_missing_keys()
+        if len(missing_keys) > 0:
+            return Response(
+                { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        error_message = self._validate()
+        if error_message:
+            return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)
+
+        name = request.data['name']
+        year = request.data['year']
+        artist_id = request.data['artistId']
+        genre_ids = request.data['genreIds']
+        sources = request.data['sources']
+
+        song.name = name
+        song.year = year
+        song.artist_id = artist_id
+
+        try:
+            song.save()
+        except ValidationError as ex:
+            return Response({ "message": ex.args[0] }, status=status.HTTP_400_BAD_REQUEST)
+
+        # delete SongGenres where genre ids are no longer in the PUT body array
+        song.genres.exclude(genre_id__in=genre_ids).delete()
+
+        # then create new ones that don't already exist
+        for genre_id in genre_ids:
+            try:
+                song.genres.get(genre_id=genre_id)
+            except SongGenre.DoesNotExist:
+                song_genre = SongGenre(
+                    song=song,
+                    genre_id=genre_id
+                )
+
+                try:
+                    song_genre.save()
+                except ValidationError as ex:
+                    return Response({ "message": ex.args[0] }, status=status.HTTP_400_BAD_REQUEST)
+
+        urls = [ source['url'] for source in sources ]
+
+        # delete SongSources where urls are no longer in the PUT body array
+        song.sources.exclude(url__in=urls).delete()
+
+        # then create new ones that don't already exist
+        for source in sources:
+            try:
+                song_source = song.sources.get(url=source['url'])
+
+                # if exists but isPrimary was flipped, update that in existing source
+                if source['isPrimary'] != song_source.isPrimary:
+                    song_source.isPrimary = source['isPrimary']
+                    song_source.save()
+
+            except SongSource.DoesNotExist:
+                song_source = SongSource(
+                    song=song,
+                    service=source['service'],
+                    url=source['url'],
+                    isPrimary=source['isPrimary']
+                )
+
+                try:
+                    song_source.save()
+                except ValidationError as ex:
+                    return Response({ "message": ex.args[0] }, status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = SongSerializer(song)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
     def _get_missing_keys(self):
         """Given the request.data for a POST/PUT request, return a list containing the
         string values of all required keys that were not found in the request body"""
@@ -129,7 +210,11 @@ class SongViewSet(ViewSet):
             return "You must specify at least one source in `sources` array."
 
         for source in sources:
-            if 'service' not in source or 'url' not in source:
-                return "All sources must contain `service` and `url` properties."
+            if 'service' not in source or 'url' not in source or 'isPrimary' not in source:
+                return "All sources must contain `service`, `url`, and `isPrimary` properties."
+
+        primary_sources = [ source for source in sources if source['isPrimary'] == True ]
+        if len(primary_sources) != 1:
+            return "There must be one and only one primary source."
 
         return False
