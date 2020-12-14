@@ -145,3 +145,21 @@ class SongTests(APITestCase):
         self.assertEqual(song['artist']['name'], 'The Magnetic Fields')
         self.assertEqual(song['genres'][0]['genre']['name'], 'Indie Pop')
         self.assertEqual(song['sources'][0]['service'], 'YouTube')
+
+    def test_get_song_invalid_id(self):
+        response = self.client.get('/songs/1')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_get_song(self):
+        self.test_create_valid_song()
+
+        response = self.client.get('/songs/1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        song = json.loads(response.content)
+        self.assertEqual(song['id'], 1)
+        self.assertEqual(song['name'], 'Save a Secret for the Moon')
+        self.assertEqual(song['year'], 1996)
+        self.assertEqual(song['artist']['name'], 'The Magnetic Fields')
+        self.assertEqual(song['genres'][0]['genre']['name'], 'Indie Pop')
+        self.assertEqual(song['sources'][0]['service'], 'YouTube')

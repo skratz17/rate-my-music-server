@@ -28,6 +28,7 @@ class SongSerializer(serializers.ModelSerializer):
 
 class SongViewSet(ViewSet):
     def create(self, request):
+        """POST a new song"""
         missing_keys = self._get_missing_keys()
         if len(missing_keys) > 0:
             return Response(
@@ -86,6 +87,13 @@ class SongViewSet(ViewSet):
 
         serializer = SongSerializer(song) 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def retrieve(self, request, pk=None):
+        """GET a single song by id"""
+        song = get_object_or_404(Song, pk=pk)
+
+        serializer = SongSerializer(song)
+        return Response(serializer.data)
 
     def _get_missing_keys(self):
         """Given the request.data for a POST/PUT request, return a list containing the
