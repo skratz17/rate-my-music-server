@@ -11,9 +11,6 @@ from rest_framework.response import Response
 from rmmapi.helpers import get_missing_keys
 from rmmapi.models import Artist, Genre, Rater, Song, SongGenre, SongSource
 
-
-REQUIRED_KEYS = [ 'name', 'year', 'artistId', 'genreIds', 'sources' ]
-
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
@@ -35,13 +32,6 @@ class SongSerializer(serializers.ModelSerializer):
 class SongViewSet(ViewSet):
     def create(self, request):
         """POST a new song"""
-        missing_keys = get_missing_keys(request.data, REQUIRED_KEYS)
-        if len(missing_keys) > 0:
-            return Response(
-                { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
         error_message = self._validate()
         if error_message:
             return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)
@@ -106,13 +96,6 @@ class SongViewSet(ViewSet):
         song = get_object_or_404(Song, pk=pk)
 
         self.check_object_permissions(request, song.creator)
-
-        missing_keys = get_missing_keys(request.data, REQUIRED_KEYS)
-        if len(missing_keys) > 0:
-            return Response(
-                { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
 
         error_message = self._validate()
         if error_message:
@@ -239,8 +222,18 @@ class SongViewSet(ViewSet):
         return Response(serializer.data)
         
     def _validate(self):
-        """Validate values sent in POST/PUT body - ensure all IDs refer to existing objects,
-        and that all sources are objects with all required properties"""
+        """Validate values sent in POST/PUT body - 
+            ensure all required properties are present,
+            ensure all IDs refer to existing objects,
+            and that all sources are objects with all required properties
+        Returns: error message string if error found, False otherwise.
+        """
+        REQUIRED_KEYS = [ 'name', 'year', 'artistId', 'genreIds', 'sources' ]
+
+        missing_keys = get_missing_keys(self.request.data, REQUIRED_KEYS)
+        if len(missing_keys) > 0:
+                return f"Request body is missing the following required properties: {', '.join(missing_keys)}."
+
         artist_id = self.request.data['artistId']
 
         try:
