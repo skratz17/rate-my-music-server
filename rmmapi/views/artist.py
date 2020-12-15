@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import status, serializers
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
+from rmmapi.helpers import get_missing_keys
 from rmmapi.models import Artist, Rater
 
 class ArtistSerializer(serializers.ModelSerializer):
@@ -15,12 +16,9 @@ class ArtistSerializer(serializers.ModelSerializer):
 class ArtistViewSet(ViewSet):
     def create(self, request):
         """POST a new artist"""
-        missing_keys = self._get_missing_keys()
-        if len(missing_keys) > 0:
-            return Response(
-                { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        error_message = self._validate()
+        if error_message:
+            return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)
 
         rater = Rater.objects.get(user=request.auth.user)
 
@@ -53,12 +51,9 @@ class ArtistViewSet(ViewSet):
 
         self.check_object_permissions(request, artist.creator)
 
-        missing_keys = self._get_missing_keys()
-        if len(missing_keys) > 0:
-            return Response(
-                { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        error_message = self._validate()
+        if error_message:
+            return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)
 
         artist.name = request.data['name']
         artist.founded_year = request.data['founded_year']
@@ -92,15 +87,17 @@ class ArtistViewSet(ViewSet):
 
         serializer = ArtistSerializer(artists, many=True)
         return Response(serializer.data)
-    
-    def _get_missing_keys(self):
-        """Given the request.data for a POST/PUT request, return a list containing the
-        string values of all required keys that were not found in the request body"""
-        REQUIRED_KEYS = [
-            'name', 'description', 'founded_year'
-        ]
 
-        return [ key for key in REQUIRED_KEYS if not key in self.request.data ]
+    def _validate(self):
+        """Validate values sent in POST/PUT body - 
+            ensure all required properties are present
+        Returns: error message string if error found, False otherwise.
+        """
+        REQUIRED_KEYS = [ 'name', 'description', 'founded_year' ]
+
+        missing_keys = get_missing_keys(self.request.data, REQUIRED_KEYS)
+        if len(missing_keys) > 0:
+                return f"Request body is missing the following required properties: {', '.join(missing_keys)}."
 
     def _filter_by_search_term(self, artists, q):
         """Given an artists QuerySet, return it filtered by artist name containing q"""
