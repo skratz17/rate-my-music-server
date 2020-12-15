@@ -1,4 +1,5 @@
 """Rating ViewSet and Serializers"""
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from rest_framework import status, serializers
@@ -46,6 +47,13 @@ class RatingViewSet(ViewSet):
         
         serializer = RatingSerializer(rating)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def retrieve(self, request, pk=None):
+        """GET a single rating by id"""
+        rating = get_object_or_404(Rating, pk=pk)
+
+        serializer = RatingSerializer(rating)
+        return Response(serializer.data)
 
     def _validate(self):
         """Validate values sent in POST/PUT body - 

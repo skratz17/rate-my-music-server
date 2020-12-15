@@ -98,3 +98,20 @@ class RatingTests(APITestCase):
         self.assertEqual(rating['review'], 'So good!')
         self.assertEqual(rating['rater']['user']['username'], 'jweckert17')
         self.assertEqual(rating['song']['name'], 'Save a Secret for the Moon')
+
+    def test_get_rating_by_invalid_id(self):
+        response = self.client.get('/ratings/1')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_get_valid_rating(self):
+        self.test_create_valid_rating()
+
+        response = self.client.get('/ratings/1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        rating = json.loads(response.content)
+        self.assertEqual(rating['id'], 1)
+        self.assertEqual(rating['rating'], 3)
+        self.assertEqual(rating['review'], 'So good!')
+        self.assertEqual(rating['rater']['user']['username'], 'jweckert17')
+        self.assertEqual(rating['song']['name'], 'Save a Secret for the Moon')
