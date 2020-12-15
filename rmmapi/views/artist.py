@@ -4,7 +4,10 @@ from django.core.exceptions import ValidationError
 from rest_framework import status, serializers
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
+from rmmapi.helpers import get_missing_keys
 from rmmapi.models import Artist, Rater
+
+REQUIRED_KEYS = [ 'name', 'description', 'founded_year' ]
 
 class ArtistSerializer(serializers.ModelSerializer):
     """JSON serializer for artist"""
@@ -15,7 +18,7 @@ class ArtistSerializer(serializers.ModelSerializer):
 class ArtistViewSet(ViewSet):
     def create(self, request):
         """POST a new artist"""
-        missing_keys = self._get_missing_keys()
+        missing_keys = get_missing_keys(request.data, REQUIRED_KEYS)
         if len(missing_keys) > 0:
             return Response(
                 { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}."},
@@ -53,7 +56,7 @@ class ArtistViewSet(ViewSet):
 
         self.check_object_permissions(request, artist.creator)
 
-        missing_keys = self._get_missing_keys()
+        missing_keys = get_missing_keys(request.data, REQUIRED_KEYS)
         if len(missing_keys) > 0:
             return Response(
                 { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}."},
@@ -92,15 +95,6 @@ class ArtistViewSet(ViewSet):
 
         serializer = ArtistSerializer(artists, many=True)
         return Response(serializer.data)
-    
-    def _get_missing_keys(self):
-        """Given the request.data for a POST/PUT request, return a list containing the
-        string values of all required keys that were not found in the request body"""
-        REQUIRED_KEYS = [
-            'name', 'description', 'founded_year'
-        ]
-
-        return [ key for key in REQUIRED_KEYS if not key in self.request.data ]
 
     def _filter_by_search_term(self, artists, q):
         """Given an artists QuerySet, return it filtered by artist name containing q"""

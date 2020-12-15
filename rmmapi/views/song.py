@@ -8,7 +8,11 @@ from django.core.exceptions import ValidationError
 from rest_framework import status, serializers
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
+from rmmapi.helpers import get_missing_keys
 from rmmapi.models import Artist, Genre, Rater, Song, SongGenre, SongSource
+
+
+REQUIRED_KEYS = [ 'name', 'year', 'artistId', 'genreIds', 'sources' ]
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,7 +35,7 @@ class SongSerializer(serializers.ModelSerializer):
 class SongViewSet(ViewSet):
     def create(self, request):
         """POST a new song"""
-        missing_keys = self._get_missing_keys()
+        missing_keys = get_missing_keys(request.data, REQUIRED_KEYS)
         if len(missing_keys) > 0:
             return Response(
                 { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}."},
@@ -103,7 +107,7 @@ class SongViewSet(ViewSet):
 
         self.check_object_permissions(request, song.creator)
 
-        missing_keys = self._get_missing_keys()
+        missing_keys = get_missing_keys(request.data, REQUIRED_KEYS)
         if len(missing_keys) > 0:
             return Response(
                 { 'message': f"Request body is missing the following required properties: {', '.join(missing_keys)}."},
@@ -234,15 +238,6 @@ class SongViewSet(ViewSet):
         serializer = SongSerializer(songs, many=True)
         return Response(serializer.data)
         
-    def _get_missing_keys(self):
-        """Given the request.data for a POST/PUT request, return a list containing the
-        string values of all required keys that were not found in the request body"""
-        REQUIRED_KEYS = [
-           'name', 'year', 'artistId', 'genreIds', 'sources'
-        ]
-
-        return [ key for key in REQUIRED_KEYS if not key in self.request.data ]
-
     def _validate(self):
         """Validate values sent in POST/PUT body - ensure all IDs refer to existing objects,
         and that all sources are objects with all required properties"""
