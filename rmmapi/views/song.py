@@ -21,7 +21,7 @@ class SongSerializer(serializers.ModelSerializer):
     genres = SongGenresSerializer(many=True)
     class Meta:
         model = Song
-        fields = ('id', 'name', 'year', 'artist', 'genres', 'sources', 'created_at')
+        fields = ('id', 'name', 'year', 'artist', 'genres', 'sources', 'created_at', 'avg_rating')
         depth = 1
 
 class SongViewSet(ViewSet):
@@ -265,6 +265,7 @@ class SongViewSet(ViewSet):
         orderable_fields_dict = {
             'name': Lower('name'),
             'artist': Lower('artist__name'),
+            'avgRating': 'avg_rating',
             'year': 'year'
         }
 
@@ -277,11 +278,16 @@ class SongViewSet(ViewSet):
             # or ascending, by default
             direction = self.request.query_params.get('direction', 'asc')
             if direction == 'desc':
-                if order_by == 'year':
-                    order_field = '-' + order_field
-                else:
+                if order_by == 'name' or order_by == 'artist':
                     order_field = order_field.desc()
+                else:
+                    order_field = '-' + order_field
 
-            songs = songs.order_by(order_field)
+            # avgRating cannot be sorted using order_by, since it is unmapped property
+            if order_by == 'avgRating':
+                # sorts nulls to the start (considered less-than-zero rating essentially)
+                songs = sorted(songs, key=lambda s: (s.avg_rating is not None, s.avg_rating), reverse=(direction == 'desc'))
+            else:
+                songs = songs.order_by(order_field)
 
         return songs
