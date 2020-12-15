@@ -137,6 +137,7 @@ class ListTests(APITestCase):
         self.assertEqual(list['id'], 1)
         self.assertEqual(list['name'], 'My List')
         self.assertEqual(list['description'], 'Here is my list.')
+        self.assertEqual(list['creator']['user']['username'], 'jweckert17')
         self.assertEqual(len(list['songs']), 2)
         self.assertEqual(list['songs'][0]['song']['name'], 'Save a Secret for the Moon')
         self.assertEqual(list['songs'][0]['song']['artist']['name'], 'The Magnetic Fields')
@@ -161,6 +162,7 @@ class ListTests(APITestCase):
         self.assertEqual(list['id'], 1)
         self.assertEqual(list['name'], 'My List')
         self.assertEqual(list['description'], 'Here is my list.')
+        self.assertEqual(list['creator']['user']['username'], 'jweckert17')
         self.assertEqual(len(list['songs']), 2)
         self.assertEqual(list['songs'][0]['song']['name'], 'Save a Secret for the Moon')
         self.assertEqual(list['songs'][0]['song']['artist']['name'], 'The Magnetic Fields')
@@ -231,6 +233,7 @@ class ListTests(APITestCase):
         self.assertEqual(list['id'], 1)
         self.assertEqual(list['name'], 'My UPDATED List')
         self.assertEqual(list['description'], 'Here is my UPDATED list.')
+        self.assertEqual(list['creator']['user']['username'], 'jweckert17')
         self.assertEqual(len(list['songs']), 1)
         self.assertEqual(list['songs'][0]['song']['name'], 'Baby')
         self.assertEqual(list['songs'][0]['song']['artist']['name'], 'of Montreal')
@@ -268,3 +271,63 @@ class ListTests(APITestCase):
 
         response = self.client.delete('/lists/1')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_get_all_lists(self):
+        self.test_create_valid_list()
+        self._create_second_valid_list_as_second_user()
+
+        response = self.client.get('/lists')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        lists = json.loads(response.content)
+        self.assertEqual(len(lists), 2)
+        self.assertEqual(lists[0]['name'], 'My List')
+        self.assertEqual(lists[1]['name'], 'My Second List')
+
+    def test_get_all_lists_by_song_id(self):
+        self.test_create_valid_list()
+        self._create_second_valid_list_as_second_user()
+
+        response = self.client.get('/lists?songId=1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        lists = json.loads(response.content)
+        self.assertEqual(len(lists), 1)
+        self.assertEqual(lists[0]['name'], 'My List')
+
+    def test_get_all_lists_by_user_id(self):
+        self.test_create_valid_list()
+        self._create_second_valid_list_as_second_user()
+
+        response = self.client.get('/lists?userId=2')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        lists = json.loads(response.content)
+        self.assertEqual(len(lists), 1)
+        self.assertEqual(lists[0]['name'], 'My Second List')
+
+    def _create_second_valid_list_as_second_user(self):
+        data = {
+            'username': 'test',
+            'email': 'test@gmail.com',
+            'password': 'test',
+            'first_name': 'Test',
+            'last_name': 'NotEckert',
+            'bio': 'I am just a test boi.'
+        }
+
+        response = self.client.post('/register', data, format='json')
+        json_response = json.loads(response.content)
+
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + json_response['token'])
+        
+        data = {
+            "name": "My Second List",
+            "description": "Here is my second list.",
+            "songs": [
+                { "id": 2, "description": "baby song" }
+            ]
+        }
+
+        response = self.client.post('/lists', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

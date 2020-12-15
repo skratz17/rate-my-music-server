@@ -1,4 +1,4 @@
-"""Genre ViewSet and Serializers"""
+"""List ViewSet and Serializers"""
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import serializers, status
@@ -6,6 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rmmapi.helpers import get_missing_keys
 from rmmapi.models import List, Song, ListSong, Rater
+from .rater import RaterSerializer
 
 class SongSerializer(serializers.ModelSerializer):
     """JSON serializer for a song"""
@@ -24,9 +25,17 @@ class ListSongSerializer(serializers.ModelSerializer):
 class ListSerializer(serializers.ModelSerializer):
     """JSON serializer for list"""
     songs = ListSongSerializer(many=True)
+    creator = RaterSerializer()
     class Meta:
         model = List
-        fields = ('id', 'name', 'description', 'songs')
+        fields = ('id', 'name', 'description', 'songs', 'creator')
+
+class SimpleListSerializer(serializers.ModelSerializer):
+    """JSON serializer for list, sending fewer properties"""
+    creator = RaterSerializer()
+    class Meta:
+        model = List
+        fields = ('id', 'name', 'description', 'creator')
 
 
 class ListViewSet(ViewSet):
@@ -115,6 +124,22 @@ class ListViewSet(ViewSet):
 
         list.delete()
         return Response({}, status.HTTP_204_NO_CONTENT)
+
+    def list(self, request):
+        """GET all lists"""
+        lists = List.objects.all()
+
+        song_id = request.query_params.get('songId', None)
+        user_id = request.query_params.get('userId', None)
+
+        if song_id is not None:
+            lists = lists.filter(songs__song_id=song_id).distinct()
+        
+        if user_id is not None:
+            lists = lists.filter(creator_id=user_id)
+
+        serializer = SimpleListSerializer(lists, many=True)
+        return Response(serializer.data)
 
     def _validate(self):
         """Validate values sent in POST/PUT body - 
