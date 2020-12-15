@@ -86,6 +86,24 @@ class RatingViewSet(ViewSet):
         rating.delete()
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
+    def list(self, request):
+        """GET all ratings"""
+        ratings = Rating.objects.all()
+
+        user_id = request.query_params.get('userId', None)
+        song_id = request.query_params.get('songId', None)
+
+        if user_id is not None:
+            ratings = ratings.filter(rater_id=user_id)
+        
+        if song_id is not None:
+            ratings = ratings.filter(song_id=song_id)
+
+        ratings = self._sort_by_query_string_param(ratings)
+
+        serializer = RatingSerializer(ratings, many=True)
+        return Response(serializer.data)
+
     def _validate(self):
         """Validate values sent in POST/PUT body - 
             ensure all required properties are present,
@@ -105,3 +123,25 @@ class RatingViewSet(ViewSet):
             return f"The song id {song_id} does not match an existing song."
 
         return False
+
+    def _sort_by_query_string_param(self, ratings):
+        """Sort ratings QuerySet by `orderBy` query string param"""
+        orderable_fields_dict = {
+            'rating': 'rating',
+            'date': 'created_at'
+        }
+
+        order_by = self.request.query_params.get('orderBy', None)
+
+        if order_by is not None and order_by in orderable_fields_dict:
+            order_field = orderable_fields_dict[order_by]
+
+            # sort in direction indicated by `direction` query string param
+            # or ascending, by default
+            direction = self.request.query_params.get('direction', 'asc')
+            if direction == 'desc':
+                order_field = '-' + order_field
+
+            ratings = ratings.order_by(order_field)
+
+        return ratings

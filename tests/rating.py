@@ -202,3 +202,133 @@ class RatingTests(APITestCase):
 
         response = self.client.delete('/ratings/1')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_get_all_ratings(self):
+        self.test_create_valid_rating()
+        self._create_second_song_and_rating_as_second_user()
+
+        response = self.client.get('/ratings')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        ratings = json.loads(response.content)
+        self.assertEqual(len(ratings), 2)
+        self.assertEqual(ratings[0]['id'], 1)
+        self.assertEqual(ratings[0]['rating'], 3)
+        self.assertEqual(ratings[0]['review'], 'So good!')
+        self.assertEqual(ratings[0]['rater']['user']['username'], 'jweckert17')
+        self.assertEqual(ratings[0]['song']['name'], 'Save a Secret for the Moon')
+        self.assertEqual(ratings[1]['id'], 2)
+        self.assertEqual(ratings[1]['rating'], 4)
+        self.assertEqual(ratings[1]['review'], 'Very good')
+        self.assertEqual(ratings[1]['rater']['user']['username'], 'test')
+        self.assertEqual(ratings[1]['song']['name'], 'Famous')
+
+    def test_get_all_ratings_by_user_id(self):
+        self.test_create_valid_rating()
+        self._create_second_song_and_rating_as_second_user()
+
+        response = self.client.get('/ratings?userId=1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        ratings = json.loads(response.content)
+        self.assertEqual(len(ratings), 1)
+        self.assertEqual(ratings[0]['id'], 1)
+        self.assertEqual(ratings[0]['rating'], 3)
+        self.assertEqual(ratings[0]['review'], 'So good!')
+        self.assertEqual(ratings[0]['rater']['user']['username'], 'jweckert17')
+        self.assertEqual(ratings[0]['song']['name'], 'Save a Secret for the Moon')
+
+    def test_get_all_ratings_by_song_id(self):
+        self.test_create_valid_rating()
+        self._create_second_song_and_rating_as_second_user()
+
+        response = self.client.get('/ratings?songId=2')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        ratings = json.loads(response.content)
+        self.assertEqual(len(ratings), 1)
+        self.assertEqual(ratings[0]['id'], 2)
+        self.assertEqual(ratings[0]['rating'], 4)
+        self.assertEqual(ratings[0]['review'], 'Very good')
+        self.assertEqual(ratings[0]['rater']['user']['username'], 'test')
+        self.assertEqual(ratings[0]['song']['name'], 'Famous')
+
+    def test_get_all_ratings_sorted_by_rating_asc(self):
+        self.test_create_valid_rating()
+        self._create_second_song_and_rating_as_second_user()
+
+        response = self.client.get('/ratings?orderBy=rating')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        ratings = json.loads(response.content)
+        self.assertEqual(len(ratings), 2)
+        self.assertEqual(ratings[0]['rating'], 3)
+        self.assertEqual(ratings[1]['rating'], 4)
+
+    def test_get_all_ratings_sorted_by_rating_desc(self):
+        self.test_create_valid_rating()
+        self._create_second_song_and_rating_as_second_user()
+
+        response = self.client.get('/ratings?orderBy=rating&direction=desc')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        ratings = json.loads(response.content)
+        self.assertEqual(len(ratings), 2)
+        self.assertEqual(ratings[0]['rating'], 4)
+        self.assertEqual(ratings[1]['rating'], 3)
+
+    def test_get_all_ratings_sorted_by_date_asc(self):
+        self.test_create_valid_rating()
+        self._create_second_song_and_rating_as_second_user()
+
+        response = self.client.get('/ratings?orderBy=date')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        ratings = json.loads(response.content)
+        self.assertEqual(len(ratings), 2)
+        self.assertEqual(ratings[0]['id'], 1)
+        self.assertEqual(ratings[1]['id'], 2)
+
+    def test_get_all_ratings_sorted_by_date_desc(self):
+        self.test_create_valid_rating()
+        self._create_second_song_and_rating_as_second_user()
+
+        response = self.client.get('/ratings?orderBy=date&direction=desc')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        ratings = json.loads(response.content)
+        self.assertEqual(len(ratings), 2)
+        self.assertEqual(ratings[0]['id'], 2)
+        self.assertEqual(ratings[1]['id'], 1)
+
+    def _create_second_song_and_rating_as_second_user(self):
+        # create second user and use their credentials
+        data = {
+            'username': 'test',
+            'email': 'test@gmail.com',
+            'password': 'test',
+            'first_name': 'Test',
+            'last_name': 'NotEckert',
+            'bio': 'I am just a test boi.'
+        }
+
+        response = self.client.post('/register', data, format='json')
+        json_response = json.loads(response.content)
+
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + json_response['token']) 
+
+        song_data = {
+            'name': 'Famous',
+            'year': 1996,
+            'artistId': 1,
+            'genreIds': [ 1 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=n3L-4vASZ5s', 'isPrimary': True }]
+        }
+        self.client.post('/songs', song_data, format='json')
+
+        rating_data = {
+            "rating": 4,
+            "songId": 2,
+            "review": "Very good"
+        }
+        self.client.post('/ratings', rating_data, format='json')
