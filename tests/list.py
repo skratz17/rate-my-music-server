@@ -335,6 +335,24 @@ class ListTests(APITestCase):
         response = self.client.delete('/lists/1/favorite')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
+    def test_fav_count_with_no_favorites(self):
+        self.test_create_valid_list()
+
+        response = self.client.get('/lists/1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        list = json.loads(response.content)
+        self.assertEqual(list['fav_count'], 0)
+
+    def test_fav_count_with_favorites(self):
+        self.test_favorite_list()
+
+        response = self.client.get('/lists/1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        list = json.loads(response.content)
+        self.assertEqual(list['fav_count'], 1)
+
     def _create_second_valid_list_as_second_user(self):
         data = {
             'username': 'test',

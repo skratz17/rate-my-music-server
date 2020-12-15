@@ -6,3 +6,7 @@ class List(models.Model):
     description = models.CharField(max_length=1000)
     creator = models.ForeignKey("rmmapi.Rater", on_delete=models.SET(get_deleted_rater_instance))
     created_at = models.DateTimeField(auto_now=False, auto_now_add=False)
+
+    @property
+    def fav_count(self):
+        return self.favorites.count()

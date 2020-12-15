@@ -29,14 +29,14 @@ class ListSerializer(serializers.ModelSerializer):
     creator = RaterSerializer()
     class Meta:
         model = List
-        fields = ('id', 'name', 'description', 'songs', 'creator')
+        fields = ('id', 'name', 'description', 'songs', 'creator', 'fav_count')
 
 class SimpleListSerializer(serializers.ModelSerializer):
     """JSON serializer for list, sending fewer properties"""
     creator = RaterSerializer()
     class Meta:
         model = List
-        fields = ('id', 'name', 'description', 'creator')
+        fields = ('id', 'name', 'description', 'creator', 'fav_count')
 
 
 class ListViewSet(ViewSet):
