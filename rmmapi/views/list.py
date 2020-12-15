@@ -107,6 +107,15 @@ class ListViewSet(ViewSet):
         serializer = ListSerializer(list)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def destroy(self, request, pk=None):
+        """DELETE a list by id"""
+        list = get_object_or_404(List, pk=pk)
+
+        self.check_object_permissions(request, list.creator)
+
+        list.delete()
+        return Response({}, status.HTTP_204_NO_CONTENT)
+
     def _validate(self):
         """Validate values sent in POST/PUT body - 
             ensure all required properties are present,
