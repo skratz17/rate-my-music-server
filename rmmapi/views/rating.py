@@ -55,6 +55,28 @@ class RatingViewSet(ViewSet):
         serializer = RatingSerializer(rating)
         return Response(serializer.data)
 
+    def update(self, request, pk=None):
+        """PUT a rating"""
+        rating = get_object_or_404(Rating, pk=pk)
+
+        self.check_object_permissions(request, rating.rater)
+
+        error_message = self._validate()
+        if error_message:
+            return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)
+
+        rating.rating = request.data['rating']
+        rating.review = request.data['review']
+        rating.song_id = request.data['songId']
+
+        try:
+            rating.save()
+        except ValidationError as ex:
+            return Response({ "message": ex.args[0] }, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = RatingSerializer(rating)
+        return Response(serializer.data)
+
     def _validate(self):
         """Validate values sent in POST/PUT body - 
             ensure all required properties are present,
