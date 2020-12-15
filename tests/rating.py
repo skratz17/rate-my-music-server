@@ -170,3 +170,35 @@ class RatingTests(APITestCase):
         self.assertEqual(rating['id'], 1)
         self.assertEqual(rating['rating'], 5)
         self.assertEqual(rating['review'], 'Actually, perfect')
+
+    def test_delete_rating_invalid_id(self):
+        response = self.client.delete('/ratings/1')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_delete_rating_as_non_creator(self):
+        # create rating as Jacob
+        self.test_create_valid_rating()
+
+        # create second user and use their credentials
+        data = {
+            'username': 'test',
+            'email': 'test@gmail.com',
+            'password': 'test',
+            'first_name': 'Test',
+            'last_name': 'NotEckert',
+            'bio': 'I am just a test boi.'
+        }
+
+        response = self.client.post('/register', data, format='json')
+        json_response = json.loads(response.content)
+
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + json_response['token']) 
+
+        response = self.client.delete('/ratings/1')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_delete_valid_rating(self):
+        self.test_create_valid_rating()
+
+        response = self.client.delete('/ratings/1')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

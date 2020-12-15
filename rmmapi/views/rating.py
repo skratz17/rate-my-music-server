@@ -77,6 +77,15 @@ class RatingViewSet(ViewSet):
         serializer = RatingSerializer(rating)
         return Response(serializer.data)
 
+    def destroy(self, request, pk=None):
+        """DELETE a rating"""
+        rating = get_object_or_404(Rating, pk=pk)
+
+        self.check_object_permissions(request, rating.rater)
+
+        rating.delete()
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
     def _validate(self):
         """Validate values sent in POST/PUT body - 
             ensure all required properties are present,
