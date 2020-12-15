@@ -1,5 +1,4 @@
 """Song ViewSet and Serializers"""
-from rmmapi.views.genre import GenreSerializer
 from django.db.models import Q
 from django.db.models.functions import Lower
 from django.shortcuts import get_object_or_404

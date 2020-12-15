@@ -1,6 +1,7 @@
 """List ViewSet and Serializers"""
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 from rest_framework import serializers, status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
@@ -38,7 +39,6 @@ class SimpleListSerializer(serializers.ModelSerializer):
         model = List
         fields = ('id', 'name', 'description', 'creator', 'fav_count')
 
-
 class ListViewSet(ViewSet):
     def create(self, request):
         """POST a new list"""
@@ -57,7 +57,11 @@ class ListViewSet(ViewSet):
             creator=rater,
             created_at=timezone.now()
         )
-        list.save()
+
+        try:
+            list.save()
+        except ValidationError as ex:
+            return Response({ "message": ex.args[0] }, status=status.HTTP_400_BAD_REQUEST)
 
         for song in songs:
             list_song = ListSong(
@@ -65,7 +69,10 @@ class ListViewSet(ViewSet):
                 song_id=song['id'],
                 description=song['description']
             )
-            list_song.save()
+            try:
+                list_song.save()
+            except ValidationError as ex:
+                return Response({ "message": ex.args[0] }, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = ListSerializer(list)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -93,7 +100,11 @@ class ListViewSet(ViewSet):
 
         list.name = name
         list.description = description
-        list.save()
+
+        try:
+            list.save()
+        except ValidationError as ex:
+            return Response({ "message": ex.args[0] }, status=status.HTTP_400_BAD_REQUEST)
 
         # delete any ListSong previously saved for this list that is not in the new songs list
         song_ids = [ song['id'] for song in songs ]
@@ -103,16 +114,20 @@ class ListViewSet(ViewSet):
         for song in songs:
             try:
                 list_song = ListSong.objects.get(list=list, song_id=song['id'])
-                if song['description'] != list_song.description:
-                        list_song.description = song['description']
-                        list_song.save()
             except ListSong.DoesNotExist:
-                new_list_song = ListSong(
+                list_song = ListSong(
                     list=list,
                     song_id=song['id'],
                     description=song['description']
                 )
-                new_list_song.save()
+
+            if song['description'] != list_song.description:
+                list_song.description = song['description']
+            
+            try:
+                list_song.save()
+            except ValidationError as ex:
+                return Response({ "message": ex.args[0] }, status=status.HTTP_400_BAD_REQUEST)
             
         serializer = ListSerializer(list)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -160,7 +175,11 @@ class ListViewSet(ViewSet):
                     list=list,
                     rater=rater
                 )
-                list_favorite.save()
+
+                try:
+                    list_favorite.save()
+                except ValidationError as ex:
+                    return Response({ "message": ex.args[0] }, status=status.HTTP_400_BAD_REQUEST)
             
             return Response({}, status=status.HTTP_204_NO_CONTENT)
 
