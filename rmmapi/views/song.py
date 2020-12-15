@@ -21,7 +21,7 @@ class SongSerializer(serializers.ModelSerializer):
     genres = SongGenresSerializer(many=True)
     class Meta:
         model = Song
-        fields = ('id', 'name', 'year', 'artist', 'genres', 'sources', 'created_at')
+        fields = ('id', 'name', 'year', 'artist', 'genres', 'sources', 'created_at', 'avg_rating')
         depth = 1
 
 class SongViewSet(ViewSet):

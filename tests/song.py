@@ -467,6 +467,71 @@ class SongTests(APITestCase):
         self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
         self.assertEqual(songs[1]['name'], 'Baby')
 
+    def test_avg_rating_with_no_ratings(self):
+        self.test_create_valid_song()
+
+        response = self.client.get('/songs/1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        song = json.loads(response.content)
+        self.assertEqual(song['avg_rating'], None)
+
+    def test_avg_rating_with_one_rating(self):
+        self.test_create_valid_song()
+
+        rating = {
+            "rating": 5,
+            "review": "so good",
+            "songId": 1
+        }
+
+        self.client.post('/ratings', rating, format='json')
+
+        response = self.client.get('/songs/1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        song = json.loads(response.content)
+        self.assertEqual(song['avg_rating'], 5)
+
+    def test_avg_rating_with_two_ratings(self):
+        self.test_create_valid_song()
+
+        rating = {
+            "rating": 5,
+            "review": "so good",
+            "songId": 1
+        }
+
+        self.client.post('/ratings', rating, format='json')
+
+        # create second user and use their credentials
+        data = {
+            'username': 'test',
+            'email': 'test@gmail.com',
+            'password': 'test',
+            'first_name': 'Test',
+            'last_name': 'NotEckert',
+            'bio': 'I am just a test boi.'
+        }
+
+        response = self.client.post('/register', data, format='json')
+        json_response = json.loads(response.content)
+
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + json_response['token']) 
+
+        rating_data = {
+            "rating": 3,
+            "songId": 1,
+            "review": "Very good"
+        }
+        self.client.post('/ratings', rating_data, format='json')
+
+        response = self.client.get('/songs/1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        song = json.loads(response.content)
+        self.assertEqual(song['avg_rating'], 4)
+
     def _create_second_valid_song(self):
         artist = Artist(
             name="of Montreal",
