@@ -467,6 +467,72 @@ class SongTests(APITestCase):
         self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
         self.assertEqual(songs[1]['name'], 'Baby')
 
+    def test_get_all_songs_ordered_by_avg_rating_asc(self):
+        # creates song id of 1 and two ratings -> avg rating of 4
+        self.test_avg_rating_with_two_ratings()
+
+        # creates song id of 2 with one rating -> avg rating of 3
+        self._create_second_valid_song()
+
+        rating_data = {
+            "rating": 3,
+            "songId": 2,
+            "review": "Very good"
+        }
+        self.client.post('/ratings', rating_data, format='json')
+
+        # create a third song that will have no ratings -> avg rating of null
+        data = {
+            'name': 'Strange Powers',
+            'year': 1995,
+            'artistId': 1,
+            'genreIds': [ 2 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'isPrimary': True }]
+        }
+        self.client.post('/songs', data, format='json')
+
+        response = self.client.get('/songs?orderBy=avgRating')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 3)
+        self.assertEqual(songs[0]['avg_rating'], None)
+        self.assertEqual(songs[1]['avg_rating'], 3)
+        self.assertEqual(songs[2]['avg_rating'], 4)
+
+    def test_get_all_songs_ordered_by_avg_rating_desc(self):
+        # creates song id of 1 and two ratings -> avg rating of 4
+        self.test_avg_rating_with_two_ratings()
+
+        # creates song id of 2 with one rating -> avg rating of 3
+        self._create_second_valid_song()
+
+        rating_data = {
+            "rating": 3,
+            "songId": 2,
+            "review": "Very good"
+        }
+        self.client.post('/ratings', rating_data, format='json')
+
+        # create a third song that will have no ratings -> avg rating of null
+        data = {
+            'name': 'Strange Powers',
+            'year': 1995,
+            'artistId': 1,
+            'genreIds': [ 2 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'isPrimary': True }]
+        }
+        self.client.post('/songs', data, format='json')
+
+        response = self.client.get('/songs?orderBy=avgRating&direction=desc')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        songs = json.loads(response.content)
+        self.assertEqual(len(songs), 3)
+        self.assertEqual(songs[0]['avg_rating'], 4)
+        self.assertEqual(songs[1]['avg_rating'], 3)
+        self.assertEqual(songs[2]['avg_rating'], None)
+
     def test_avg_rating_with_no_ratings(self):
         self.test_create_valid_song()
 
