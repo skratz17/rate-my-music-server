@@ -4,8 +4,9 @@ from django.utils import timezone
 from rest_framework import serializers, status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rmmapi.helpers import get_missing_keys
-from rmmapi.models import List, Song, ListSong, Rater
+from rmmapi.models import List, Song, ListSong, Rater, ListFavorite
 from .rater import RaterSerializer
 
 class SongSerializer(serializers.ModelSerializer):
@@ -140,6 +141,41 @@ class ListViewSet(ViewSet):
 
         serializer = SimpleListSerializer(lists, many=True)
         return Response(serializer.data)
+
+    @action(methods=['post', 'delete'], detail=True)
+    def favorite(self, request, pk=None):
+        list = get_object_or_404(List, pk=pk)
+        rater = Rater.objects.get(user=request.auth.user)
+
+        if request.method == 'POST':
+            """POST a new ListFavorite"""
+            try:
+                ListFavorite.objects.get(rater=rater, list=list)
+                return Response(
+                    { 'message': 'User has already favorited this list.'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            except ListFavorite.DoesNotExist:
+                list_favorite = ListFavorite(
+                    list=list,
+                    rater=rater
+                )
+                list_favorite.save()
+            
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        elif request.method == 'DELETE':
+            """DELETE a ListFavorite"""
+            try:
+                list_favorite = ListFavorite.objects.get(rater=rater, list=list)
+            except ListFavorite.DoesNotExist:
+                return Response(
+                    {'message': 'The user has not favorited that list.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            list_favorite.delete()
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
 
     def _validate(self):
         """Validate values sent in POST/PUT body - 

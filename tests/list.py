@@ -306,6 +306,35 @@ class ListTests(APITestCase):
         self.assertEqual(len(lists), 1)
         self.assertEqual(lists[0]['name'], 'My Second List')
 
+    def test_favorite_list_by_invalid_id(self):
+        response = self.client.post('/lists/1/favorite')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_favorite_list(self):
+        self.test_create_valid_list()
+
+        response = self.client.post('/lists/1/favorite')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_delete_favorite_by_invalid_list_id(self):
+        response = self.client.delete('/lists/1/favorite')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_delete_favorite_that_does_not_exist(self):
+        self.test_create_valid_list()
+
+        response = self.client.delete('/lists/1/favorite')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error_message = json.loads(response.content)
+        self.assertEqual(error_message['message'], 'The user has not favorited that list.')
+
+    def test_delete_favorite(self):
+        self.test_favorite_list()
+
+        response = self.client.delete('/lists/1/favorite')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
     def _create_second_valid_list_as_second_user(self):
         data = {
             'username': 'test',
