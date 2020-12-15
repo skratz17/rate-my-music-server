@@ -1,4 +1,5 @@
 """Genre ViewSet and Serializers"""
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import serializers, status
 from rest_framework.viewsets import ViewSet
@@ -58,6 +59,13 @@ class ListViewSet(ViewSet):
 
         serializer = ListSerializer(list)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def retrieve(self, request, pk=None):
+        """GET a single list by id"""
+        list = get_object_or_404(List, pk=pk)
+
+        serializer = ListSerializer(list)
+        return Response(serializer.data)
 
     def _validate(self):
         """Validate values sent in POST/PUT body - 

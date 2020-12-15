@@ -131,3 +131,27 @@ class ListTests(APITestCase):
         self.assertEqual(list['songs'][1]['song']['artist']['name'], 'of Montreal')
         self.assertEqual(len(list['songs'][1]['song']['sources']), 1)
         self.assertEqual(list['songs'][1]['description'], 'baby song')
+
+    def test_get_by_invalid_id(self):
+        response = self.client.get('/lists/1')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_get_by_id(self):
+        self.test_create_valid_list()
+
+        response = self.client.get('/lists/1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        list = json.loads(response.content)
+        self.assertEqual(list['id'], 1)
+        self.assertEqual(list['name'], 'My List')
+        self.assertEqual(list['description'], 'Here is my list.')
+        self.assertEqual(len(list['songs']), 2)
+        self.assertEqual(list['songs'][0]['song']['name'], 'Save a Secret for the Moon')
+        self.assertEqual(list['songs'][0]['song']['artist']['name'], 'The Magnetic Fields')
+        self.assertEqual(len(list['songs'][0]['song']['sources']), 1)
+        self.assertEqual(list['songs'][0]['description'], 'secret saving')
+        self.assertEqual(list['songs'][1]['song']['name'], 'Baby')
+        self.assertEqual(list['songs'][1]['song']['artist']['name'], 'of Montreal')
+        self.assertEqual(len(list['songs'][1]['song']['sources']), 1)
+        self.assertEqual(list['songs'][1]['description'], 'baby song')
