@@ -106,6 +106,21 @@ class ListTests(APITestCase):
         error_message = json.loads(response.content)
         self.assertEqual(error_message['message'], "All songs must contain `id` and `description` properties.")
 
+    def test_create_list_duplicate_songs(self):
+        data = {
+            "name": "My List",
+            "description": "Here is my list.",
+            "songs": [
+                { "id": 1, "description": "secret saving" },
+                { "id": 1, "description": "secret saving again" }
+            ]
+        }
+        response = self.client.post('/lists', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error_message = json.loads(response.content)
+        self.assertEqual(error_message['message'], "List cannot contain any duplicate songs.")
+
     def test_create_valid_list(self):
         data = {
             "name": "My List",
@@ -155,3 +170,69 @@ class ListTests(APITestCase):
         self.assertEqual(list['songs'][1]['song']['artist']['name'], 'of Montreal')
         self.assertEqual(len(list['songs'][1]['song']['sources']), 1)
         self.assertEqual(list['songs'][1]['description'], 'baby song')
+
+    def test_update_by_invalid_id(self):
+        data = {
+            "name": "My UPDATED List",
+            "description": "Here is my UPDATED list.",
+            "songs": [
+                { "id": 2, "description": "baby song" }
+            ]
+        }
+
+        response = self.client.put('/lists/1', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_update_as_non_creator(self):
+        # create list as Jacob
+        self.test_create_valid_list()
+
+        # create second user and use their credentials
+        data = {
+            'username': 'test',
+            'email': 'test@gmail.com',
+            'password': 'test',
+            'first_name': 'Test',
+            'last_name': 'NotEckert',
+            'bio': 'I am just a test boi.'
+        }
+
+        response = self.client.post('/register', data, format='json')
+        json_response = json.loads(response.content)
+
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + json_response['token'])
+
+        data = {
+            "name": "My UPDATED List",
+            "description": "Here is my UPDATED list.",
+            "songs": [
+                { "id": 2, "description": "baby song" }
+            ]
+        }
+
+        response = self.client.put('/lists/1', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_update_valid_list(self):
+        self.test_create_valid_list()
+
+        data = {
+            "name": "My UPDATED List",
+            "description": "Here is my UPDATED list.",
+            "songs": [
+                { "id": 2, "description": "UPDATED song" }
+            ]
+        }
+
+        response = self.client.put('/lists/1', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        list = json.loads(response.content)
+        self.assertEqual(list['id'], 1)
+        self.assertEqual(list['name'], 'My UPDATED List')
+        self.assertEqual(list['description'], 'Here is my UPDATED list.')
+        self.assertEqual(len(list['songs']), 1)
+        self.assertEqual(list['songs'][0]['song']['name'], 'Baby')
+        self.assertEqual(list['songs'][0]['song']['artist']['name'], 'of Montreal')
+        self.assertEqual(len(list['songs'][0]['song']['sources']), 1)
+        self.assertEqual(list['songs'][0]['description'], 'UPDATED song')

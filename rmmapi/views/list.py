@@ -67,6 +67,46 @@ class ListViewSet(ViewSet):
         serializer = ListSerializer(list)
         return Response(serializer.data)
 
+    def update(self, request, pk=None):
+        """PUT a list"""
+        list = get_object_or_404(List, pk=pk)
+
+        self.check_object_permissions(request, list.creator)
+
+        error_message = self._validate()
+        if error_message:
+            return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)
+
+        name = request.data["name"]
+        description = request.data["description"]
+        songs = request.data["songs"]
+
+        list.name = name
+        list.description = description
+        list.save()
+
+        # delete any ListSong previously saved for this list that is not in the new songs list
+        song_ids = [ song['id'] for song in songs ]
+        list.songs.exclude(song_id__in=song_ids).delete()
+
+        # then either create new ones that don't exist or update descriptions of ones that do
+        for song in songs:
+            try:
+                list_song = ListSong.objects.get(list=list, song_id=song['id'])
+                if song['description'] != list_song.description:
+                        list_song.description = song['description']
+                        list_song.save()
+            except ListSong.DoesNotExist:
+                new_list_song = ListSong(
+                    list=list,
+                    song_id=song['id'],
+                    description=song['description']
+                )
+                new_list_song.save()
+            
+        serializer = ListSerializer(list)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def _validate(self):
         """Validate values sent in POST/PUT body - 
             ensure all required properties are present,
@@ -81,13 +121,20 @@ class ListViewSet(ViewSet):
             return f"Request body is missing the following required properties: {', '.join(missing_keys)}."
 
         songs = self.request.data['songs']
+        found_ids = []
         for song in songs:
             if 'id' not in song or 'description' not in song:
                 return "All songs must contain `id` and `description` properties."
             song_id = song['id']
+
             try:
                 Song.objects.get(pk=song_id)           
             except Song.DoesNotExist:
                 return f"The song id {song_id} does not match an existing song."
+            
+            if song['id'] in found_ids:
+                return "List cannot contain any duplicate songs."
+            
+            found_ids.append(song['id'])
 
         return False
