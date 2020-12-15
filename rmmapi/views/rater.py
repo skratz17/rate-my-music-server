@@ -1,6 +1,9 @@
 """Rater ViewSet and Serializers"""
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from rest_framework.viewsets import ViewSet
+from rest_framework.response import Response
 from rmmapi.models import Rater
 
 class UserSerializer(serializers.ModelSerializer):
@@ -16,3 +19,11 @@ class RaterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rater
         fields = ('id', 'bio', 'user')
+
+class RaterViewSet(ViewSet):
+    def retrieve(self, request, pk=None):
+        """GET a single rater"""
+        rater = get_object_or_404(Rater, pk=pk)
+
+        serializer = RaterSerializer(rater)
+        return Response(serializer.data)

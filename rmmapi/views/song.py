@@ -11,16 +11,11 @@ from rest_framework.response import Response
 from rmmapi.helpers import get_missing_keys
 from rmmapi.models import Artist, Genre, Rater, Song, SongGenre, SongSource
 
-class GenreSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Genre
-        fields = ('id', 'name')
-
 class SongGenresSerializer(serializers.ModelSerializer):
-    genre = GenreSerializer()
     class Meta:
         model = SongGenre
         fields = ('id', 'genre')
+        depth = 1
 
 class SongSerializer(serializers.ModelSerializer):
     genres = SongGenresSerializer(many=True)
