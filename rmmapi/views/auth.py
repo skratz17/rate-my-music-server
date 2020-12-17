@@ -1,8 +1,9 @@
 """Authentication Module"""
 import json
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, get_user_model
-from django.http.response import HttpResponseBadRequest
+from django.http.response import HttpResponseBadRequest, HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
 from rmmapi.models import Rater
@@ -59,14 +60,29 @@ def register_user(request):
             if not field in req_body:
                 return HttpResponseBadRequest(json.dumps({ "message": f"Field `{field}` is required." }))
 
+        try:
+            User.objects.get(username=req_body['username'])
+            return HttpResponseBadRequest(json.dumps({ "message": "A user with that username already exists." }))
+        except:
+            pass
+
+        try:
+            User.objects.get(email=req_body['email'])
+            return HttpResponseBadRequest(json.dumps({ "message": "A user with that email already exists." }))
+        except:
+            pass
+
         # Create a new User via the create_user helper method from Django's User model
-        new_user = User.objects.create_user(
-            username=req_body['username'],
-            email=req_body['email'],
-            password=req_body['password'],
-            first_name=req_body['first_name'],
-            last_name=req_body['last_name']
-        )
+        try:
+            new_user = User.objects.create_user(
+                username=req_body['username'],
+                email=req_body['email'],
+                password=req_body['password'],
+                first_name=req_body['first_name'],
+                last_name=req_body['last_name']
+            )
+        except ValidationError as ex:
+            return HttpResponseServerError()
 
         # Create a new Rater to pair with this User
         rater = Rater.objects.create(
