@@ -31,3 +31,12 @@ class RaterTests(APITestCase):
         self.assertEqual(rater['id'], 1)
         self.assertEqual(rater['bio'], 'I am just a cool boi.')
         self.assertEqual(rater['user']['username'], 'jweckert17')
+
+    def test_get_logged_in_rater(self):
+        response = self.client.get('/raters')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        rater = json.loads(response.content)
+        self.assertEqual(rater['id'], 1)
+        self.assertEqual(rater['bio'], 'I am just a cool boi.')
+        self.assertEqual(rater['user']['username'], 'jweckert17')

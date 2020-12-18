@@ -21,6 +21,13 @@ class RaterSerializer(serializers.ModelSerializer):
         fields = ('id', 'bio', 'user')
 
 class RaterViewSet(ViewSet):
+    def list(self, request):
+        """GET the logged-in rater"""
+        rater = Rater.objects.get(user=request.auth.user)
+
+        serializer = RaterSerializer(rater)
+        return Response(serializer.data)
+
     def retrieve(self, request, pk=None):
         """GET a single rater"""
         rater = get_object_or_404(Rater, pk=pk)
