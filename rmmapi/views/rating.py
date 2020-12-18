@@ -27,7 +27,7 @@ class RatingViewSet(ViewSet):
 
         rater = Rater.objects.get(user=request.auth.user)
         try:
-            Rating.objects.get(song_id=request.data['songId'], rater=rater)
+            Rating.objects.get(song_id=request.data['song_id'], rater=rater)
             return Response({'message': 'User has already rated that song.'}, status=status.HTTP_400_BAD_REQUEST)
         except:
             pass
@@ -35,7 +35,7 @@ class RatingViewSet(ViewSet):
         rating = Rating(
             rating=request.data['rating'],
             review=request.data['review'],
-            song_id=request.data['songId'],
+            song_id=request.data['song_id'],
             rater=rater,
             created_at=timezone.now()
         )
@@ -67,7 +67,7 @@ class RatingViewSet(ViewSet):
 
         rating.rating = request.data['rating']
         rating.review = request.data['review']
-        rating.song_id = request.data['songId']
+        rating.song_id = request.data['song_id']
 
         try:
             rating.save()
@@ -110,13 +110,13 @@ class RatingViewSet(ViewSet):
             ensure song id refers to a valid song
         Returns: error message string if error found, False otherwise.
         """
-        REQUIRED_KEYS = [ 'rating', 'review', 'songId' ]
+        REQUIRED_KEYS = [ 'rating', 'review', 'song_id' ]
 
         missing_keys = get_missing_keys(self.request.data, REQUIRED_KEYS)
         if len(missing_keys) > 0:
             return f"Request body is missing the following required properties: {', '.join(missing_keys)}."
 
-        song_id = self.request.data['songId']
+        song_id = self.request.data['song_id']
         try:
             Song.objects.get(pk=song_id)
         except Song.DoesNotExist:

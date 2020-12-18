@@ -35,9 +35,9 @@ class RatingTests(APITestCase):
         song_data = {
             'name': 'Save a Secret for the Moon',
             'year': 1996,
-            'artistId': 1,
-            'genreIds': [ 1 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'isPrimary': True }]
+            'artist_id': 1,
+            'genre_ids': [ 1 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'is_primary': True }]
         }
         self.client.post('/songs', song_data, format='json')
 
@@ -45,7 +45,7 @@ class RatingTests(APITestCase):
         # missing review key
         data = {
             "rating": 3,
-            "songId": 1
+            "song_id": 1
         }
 
         response = self.client.post('/ratings', data, format='json')
@@ -57,7 +57,7 @@ class RatingTests(APITestCase):
     def test_create_rating_invalid_song_id(self):
         data = {
             "rating": 3,
-            "songId": 666,
+            "song_id": 666,
             "review": "Devilishly good."
         }
 
@@ -70,7 +70,7 @@ class RatingTests(APITestCase):
     def test_create_duplicate_rating_for_song(self):
         data = {
             "rating": 3,
-            "songId": 1,
+            "song_id": 1,
             "review": "So good!"
         }
 
@@ -85,7 +85,7 @@ class RatingTests(APITestCase):
     def test_create_valid_rating(self):
         data = {
             "rating": 3,
-            "songId": 1,
+            "song_id": 1,
             "review": "So good!"
         }
 
@@ -119,7 +119,7 @@ class RatingTests(APITestCase):
     def test_update_rating_invalid_id(self):
         data = {
             "rating": 5,
-            "songId": 1,
+            "song_id": 1,
             "review": "Actually, perfect"
         }
 
@@ -147,7 +147,7 @@ class RatingTests(APITestCase):
 
         data = {
             "rating": 5,
-            "songId": 1,
+            "song_id": 1,
             "review": "Actually, perfect"
         }
 
@@ -159,7 +159,7 @@ class RatingTests(APITestCase):
 
         data = {
             "rating": 5,
-            "songId": 1,
+            "song_id": 1,
             "review": "Actually, perfect"
         }
 
@@ -320,15 +320,15 @@ class RatingTests(APITestCase):
         song_data = {
             'name': 'Famous',
             'year': 1996,
-            'artistId': 1,
-            'genreIds': [ 1 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=n3L-4vASZ5s', 'isPrimary': True }]
+            'artist_id': 1,
+            'genre_ids': [ 1 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=n3L-4vASZ5s', 'is_primary': True }]
         }
         self.client.post('/songs', song_data, format='json')
 
         rating_data = {
             "rating": 4,
-            "songId": 2,
+            "song_id": 2,
             "review": "Very good"
         }
         self.client.post('/ratings', rating_data, format='json')
