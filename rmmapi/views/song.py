@@ -32,8 +32,8 @@ class SongViewSet(ViewSet):
 
         name = request.data['name']
         year = request.data['year']
-        artist_id = request.data['artistId']
-        genre_ids = request.data['genreIds']
+        artist_id = request.data['artist_id']
+        genre_ids = request.data['genre_ids']
         sources = request.data['sources']
 
         rater = Rater.objects.get(user=request.auth.user)
@@ -67,7 +67,7 @@ class SongViewSet(ViewSet):
                 song=song,
                 service=source["service"],
                 url=source["url"],
-                isPrimary=source['isPrimary']
+                is_primary=source['is_primary']
             )
 
             try:
@@ -97,8 +97,8 @@ class SongViewSet(ViewSet):
 
         name = request.data['name']
         year = request.data['year']
-        artist_id = request.data['artistId']
-        genre_ids = request.data['genreIds']
+        artist_id = request.data['artist_id']
+        genre_ids = request.data['genre_ids']
         sources = request.data['sources']
 
         song.name = name
@@ -139,8 +139,8 @@ class SongViewSet(ViewSet):
                 song_source = song.sources.get(url=source['url'])
 
                 # if exists but isPrimary was flipped, update that in existing source
-                if source['isPrimary'] != song_source.isPrimary:
-                    song_source.isPrimary = source['isPrimary']
+                if source['is_primary'] != song_source.is_primary:
+                    song_source.is_primary = source['is_primary']
                     song_source.save()
 
             except SongSource.DoesNotExist:
@@ -148,7 +148,7 @@ class SongViewSet(ViewSet):
                     song=song,
                     service=source['service'],
                     url=source['url'],
-                    isPrimary=source['isPrimary']
+                    is_primary=source['is_primary']
                 )
 
                 try:
@@ -222,20 +222,20 @@ class SongViewSet(ViewSet):
             and that all sources are objects with all required properties
         Returns: error message string if error found, False otherwise.
         """
-        REQUIRED_KEYS = [ 'name', 'year', 'artistId', 'genreIds', 'sources' ]
+        REQUIRED_KEYS = [ 'name', 'year', 'artist_id', 'genre_ids', 'sources' ]
 
         missing_keys = get_missing_keys(self.request.data, REQUIRED_KEYS)
         if len(missing_keys) > 0:
                 return f"Request body is missing the following required properties: {', '.join(missing_keys)}."
 
-        artist_id = self.request.data['artistId']
+        artist_id = self.request.data['artist_id']
 
         try:
             Artist.objects.get(pk=artist_id)
         except Artist.DoesNotExist:
             return "`artistId` supplied does not match an existing artist." 
 
-        genre_ids = self.request.data['genreIds']
+        genre_ids = self.request.data['genre_ids']
         if len(genre_ids) == 0:
             return "You must specify at least one genre id in `genreIds` array."
 
@@ -250,10 +250,10 @@ class SongViewSet(ViewSet):
             return "You must specify at least one source in `sources` array."
 
         for source in sources:
-            if 'service' not in source or 'url' not in source or 'isPrimary' not in source:
-                return "All sources must contain `service`, `url`, and `isPrimary` properties."
+            if 'service' not in source or 'url' not in source or 'is_primary' not in source:
+                return "All sources must contain `service`, `url`, and `is_primary` properties."
 
-        primary_sources = [ source for source in sources if source['isPrimary'] == True ]
+        primary_sources = [ source for source in sources if source['is_primary'] == True ]
         if len(primary_sources) != 1:
             return "There must be one and only one primary source."
 

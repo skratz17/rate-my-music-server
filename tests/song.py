@@ -40,23 +40,23 @@ class SongTests(APITestCase):
         data = {
             'name': 'Save a Secret for the Moon',
             'year': 1996,
-            'genreIds': [ 1 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'isPrimary': True }]
+            'genre_ids': [ 1 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'is_primary': True }]
         }
 
         response = self.client.post('/songs', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         error_message = json.loads(response.content)
-        self.assertEqual(error_message['message'], 'Request body is missing the following required properties: artistId.')
+        self.assertEqual(error_message['message'], 'Request body is missing the following required properties: artist_id.')
 
     def test_create_song_invalid_artist_id(self):
         data = {
             'name': 'Save a Secret for the Moon',
             'year': 1996,
-            'artistId': 666,
-            'genreIds': [ 1 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'isPrimary': True }]
+            'artist_id': 666,
+            'genre_ids': [ 1 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'is_primary': True }]
         }
 
         response = self.client.post('/songs', data, format='json')
@@ -69,9 +69,9 @@ class SongTests(APITestCase):
         data = {
             'name': 'Save a Secret for the Moon',
             'year': 1996,
-            'artistId': 1,
-            'genreIds': [ ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'isPrimary': True }]
+            'artist_id': 1,
+            'genre_ids': [ ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'is_primary': True }]
         }
 
         response = self.client.post('/songs', data, format='json')
@@ -84,9 +84,9 @@ class SongTests(APITestCase):
         data = {
             'name': 'Save a Secret for the Moon',
             'year': 1996,
-            'artistId': 1,
-            'genreIds': [ 1, 666 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'isPrimary': True }]
+            'artist_id': 1,
+            'genre_ids': [ 1, 666 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'is_primary': True }]
         }
 
         response = self.client.post('/songs', data, format='json')
@@ -99,8 +99,8 @@ class SongTests(APITestCase):
         data = {
             'name': 'Save a Secret for the Moon',
             'year': 1996,
-            'artistId': 1,
-            'genreIds': [ 1 ],
+            'artist_id': 1,
+            'genre_ids': [ 1 ],
             'sources': [ ]
         }
 
@@ -115,8 +115,8 @@ class SongTests(APITestCase):
         data = {
             'name': 'Save a Secret for the Moon',
             'year': 1996,
-            'artistId': 1,
-            'genreIds': [ 1 ],
+            'artist_id': 1,
+            'genre_ids': [ 1 ],
             'sources': [ { 'platform': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A' }]
         }
 
@@ -124,17 +124,17 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         error_message = json.loads(response.content)
-        self.assertEqual(error_message['message'], "All sources must contain `service`, `url`, and `isPrimary` properties.")
+        self.assertEqual(error_message['message'], "All sources must contain `service`, `url`, and `is_primary` properties.")
 
     def test_create_song_multiple_primary_sources(self):
         data = {
             'name': 'Save a Secret for the Moon',
             'year': 1996,
-            'artistId': 1,
-            'genreIds': [ 1 ],
+            'artist_id': 1,
+            'genre_ids': [ 1 ],
             'sources': [ 
-                { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'isPrimary': True }, 
-                { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'isPrimary': True }
+                { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'is_primary': True }, 
+                { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'is_primary': True }
             ]
         }
 
@@ -148,9 +148,9 @@ class SongTests(APITestCase):
         data = {
             'name': 'Save a Secret for the Moon',
             'year': 1996,
-            'artistId': 1,
-            'genreIds': [ 1 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'isPrimary': True }]
+            'artist_id': 1,
+            'genre_ids': [ 1 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'is_primary': True }]
         }
 
         response = self.client.post('/songs', data, format='json')
@@ -186,9 +186,9 @@ class SongTests(APITestCase):
         data = {
             'name': 'Strange Powers',
             'year': 1995,
-            'artistId': 1,
-            'genreIds': [ 1 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'isPrimary': True }]
+            'artist_id': 1,
+            'genre_ids': [ 1 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'is_primary': True }]
         }
 
         response = self.client.put('/songs/1', data, format='json')
@@ -216,9 +216,9 @@ class SongTests(APITestCase):
         data = {
             'name': 'Strange Powers',
             'year': 1995,
-            'artistId': 1,
-            'genreIds': [ 1 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'isPrimary': True }]
+            'artist_id': 1,
+            'genre_ids': [ 1 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'is_primary': True }]
         }
 
         response = self.client.put('/songs/1', data, format='json')
@@ -231,9 +231,9 @@ class SongTests(APITestCase):
         data = {
             'name': 'Strange Powers',
             'year': 1995,
-            'artistId': 1,
-            'genreIds': [ 2 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'isPrimary': True }]
+            'artist_id': 1,
+            'genre_ids': [ 2 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'is_primary': True }]
         }
 
         response = self.client.put('/songs/1', data, format='json')
@@ -255,11 +255,11 @@ class SongTests(APITestCase):
         data = {
             'name': 'Save a Secret for the Moon',
             'year': 1996,
-            'artistId': 1,
-            'genreIds': [ 1 ],
+            'artist_id': 1,
+            'genre_ids': [ 1 ],
             'sources': [ 
-                { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'isPrimary': False },  
-                { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'isPrimary': True }
+                { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'is_primary': False },  
+                { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'is_primary': True }
             ]
         }
 
@@ -269,9 +269,9 @@ class SongTests(APITestCase):
         song = json.loads(response.content)
         self.assertEqual(len(song['sources']), 2)
         self.assertEqual(song['sources'][0]['url'], 'https://www.youtube.com/watch?v=4rk_9cYOp8A')
-        self.assertEqual(song['sources'][0]['isPrimary'], False)
+        self.assertEqual(song['sources'][0]['is_primary'], False)
         self.assertEqual(song['sources'][1]['url'], 'https://www.youtube.com/watch?v=8dNaXUwIeao')
-        self.assertEqual(song['sources'][1]['isPrimary'], True)
+        self.assertEqual(song['sources'][1]['is_primary'], True)
 
     def test_delete_song_invalid_id(self):
         response = self.client.delete('/songs/1')
@@ -476,7 +476,7 @@ class SongTests(APITestCase):
 
         rating_data = {
             "rating": 3,
-            "songId": 2,
+            "song_id": 2,
             "review": "Very good"
         }
         self.client.post('/ratings', rating_data, format='json')
@@ -485,9 +485,9 @@ class SongTests(APITestCase):
         data = {
             'name': 'Strange Powers',
             'year': 1995,
-            'artistId': 1,
-            'genreIds': [ 2 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'isPrimary': True }]
+            'artist_id': 1,
+            'genre_ids': [ 2 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'is_primary': True }]
         }
         self.client.post('/songs', data, format='json')
 
@@ -509,7 +509,7 @@ class SongTests(APITestCase):
 
         rating_data = {
             "rating": 3,
-            "songId": 2,
+            "song_id": 2,
             "review": "Very good"
         }
         self.client.post('/ratings', rating_data, format='json')
@@ -518,9 +518,9 @@ class SongTests(APITestCase):
         data = {
             'name': 'Strange Powers',
             'year': 1995,
-            'artistId': 1,
-            'genreIds': [ 2 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'isPrimary': True }]
+            'artist_id': 1,
+            'genre_ids': [ 2 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=8dNaXUwIeao', 'is_primary': True }]
         }
         self.client.post('/songs', data, format='json')
 
@@ -548,7 +548,7 @@ class SongTests(APITestCase):
         rating = {
             "rating": 5,
             "review": "so good",
-            "songId": 1
+            "song_id": 1
         }
 
         self.client.post('/ratings', rating, format='json')
@@ -565,7 +565,7 @@ class SongTests(APITestCase):
         rating = {
             "rating": 5,
             "review": "so good",
-            "songId": 1
+            "song_id": 1
         }
 
         self.client.post('/ratings', rating, format='json')
@@ -587,7 +587,7 @@ class SongTests(APITestCase):
 
         rating_data = {
             "rating": 3,
-            "songId": 1,
+            "song_id": 1,
             "review": "Very good"
         }
         self.client.post('/ratings', rating_data, format='json')
@@ -611,9 +611,9 @@ class SongTests(APITestCase):
         data = {
             'name': 'Baby',
             'year': 1997,
-            'artistId': 2,
-            'genreIds': [ 1, 2 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=pPBRwEmSESw', 'isPrimary': True }]
+            'artist_id': 2,
+            'genre_ids': [ 1, 2 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=pPBRwEmSESw', 'is_primary': True }]
         }
         response = self.client.post('/songs', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

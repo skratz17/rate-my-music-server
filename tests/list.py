@@ -46,18 +46,18 @@ class ListTests(APITestCase):
         song_data = {
             'name': 'Save a Secret for the Moon',
             'year': 1996,
-            'artistId': 1,
-            'genreIds': [ 1 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'isPrimary': True }]
+            'artist_id': 1,
+            'genre_ids': [ 1 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=4rk_9cYOp8A', 'is_primary': True }]
         }
         self.client.post('/songs', song_data, format='json')
 
         song_data = {
             'name': 'Baby',
             'year': 1997,
-            'artistId': 2,
-            'genreIds': [ 1, 2 ],
-            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=pPBRwEmSESw', 'isPrimary': True }]
+            'artist_id': 2,
+            'genre_ids': [ 1, 2 ],
+            'sources': [ { 'service': 'YouTube', 'url': 'https://www.youtube.com/watch?v=pPBRwEmSESw', 'is_primary': True }]
         }       
         self.client.post('/songs', song_data, format='json')
 
