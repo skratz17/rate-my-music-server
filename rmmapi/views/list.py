@@ -30,7 +30,7 @@ class ListSerializer(serializers.ModelSerializer):
     creator = RaterSerializer()
     class Meta:
         model = List
-        fields = ('id', 'name', 'description', 'songs', 'creator', 'fav_count')
+        fields = ('id', 'name', 'description', 'songs', 'creator', 'fav_count', 'has_rater_favorited')
 
 class SimpleListSerializer(serializers.ModelSerializer):
     """JSON serializer for list, sending fewer properties"""
@@ -58,6 +58,8 @@ class ListViewSet(ViewSet):
             created_at=timezone.now()
         )
 
+        list.has_rater_favorited = rater
+
         try:
             list.save()
         except ValidationError as ex:
@@ -80,6 +82,7 @@ class ListViewSet(ViewSet):
     def retrieve(self, request, pk=None):
         """GET a single list by id"""
         list = get_object_or_404(List, pk=pk)
+        list.has_rater_favorited = Rater.objects.get(user=request.auth.user)
 
         serializer = ListSerializer(list)
         return Response(serializer.data)
@@ -93,6 +96,8 @@ class ListViewSet(ViewSet):
         error_message = self._validate()
         if error_message:
             return Response({'message': error_message}, status=status.HTTP_400_BAD_REQUEST)
+
+        list.has_rater_favorited = Rater.objects.get(user=request.auth.user)
 
         name = request.data["name"]
         description = request.data["description"]
