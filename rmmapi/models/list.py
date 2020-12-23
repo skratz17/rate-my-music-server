@@ -10,3 +10,15 @@ class List(models.Model):
     @property
     def fav_count(self):
         return self.favorites.count()
+
+    @property
+    def has_rater_favorited(self):
+        return self.__has_rater_favorited
+
+    @has_rater_favorited.setter
+    def has_rater_favorited(self, rater):
+        try:
+            self.favorites.get(rater=rater)
+            self.__has_rater_favorited = True
+        except:
+            self.__has_rater_favorited = False
