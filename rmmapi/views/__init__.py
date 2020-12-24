@@ -7,3 +7,4 @@ from .list import ListViewSet
 from .rating import RatingViewSet
 from .rater import RaterViewSet
 from .stats import StatsViewSet
+from .search import SearchViewSet

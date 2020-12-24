@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf.urls import include
 from rest_framework import routers
 from rmmapi.views import login_user, register_user
-from rmmapi.views import ArtistViewSet, GenreViewSet, SongViewSet
+from rmmapi.views import ArtistViewSet, GenreViewSet, SongViewSet, SearchViewSet
 from rmmapi.views import ListViewSet, RatingViewSet, RaterViewSet, StatsViewSet
 
 router = routers.DefaultRouter(trailing_slash=False)
@@ -14,6 +14,7 @@ router.register(r'lists', ListViewSet, 'list')
 router.register(r'ratings', RatingViewSet, 'rating')
 router.register(r'raters', RaterViewSet, 'rater')
 router.register(r'stats', StatsViewSet, 'stats')
+router.register(r'search', SearchViewSet, 'search')
 
 urlpatterns = [
     path('', include(router.urls)),
