@@ -152,7 +152,7 @@ class ListViewSet(ViewSet):
 
         song_id = request.query_params.get('songId', None)
         user_id = request.query_params.get('userId', None)
-        favorited = request.query_params.get('favorited', None)
+        favoritedBy = request.query_params.get('favoritedBy', None)
 
         if song_id is not None:
             lists = lists.filter(songs__song_id=song_id).distinct()
@@ -160,8 +160,8 @@ class ListViewSet(ViewSet):
         if user_id is not None:
             lists = lists.filter(creator_id=user_id)
 
-        if favorited is not None:
-            lists = lists.filter(favorites__rater_id=favorited)
+        if favoritedBy is not None:
+            lists = lists.filter(favorites__rater_id=favoritedBy)
 
         serializer = SimpleListSerializer(lists, many=True)
         return Response(serializer.data)
