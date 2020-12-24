@@ -8,10 +8,12 @@ from rest_framework.response import Response
 from rmmapi.models import Rating, Song, Rater
 from rmmapi.helpers import get_missing_keys
 from .rater import RaterSerializer
+from .song import SongSerializer
 
 class RatingSerializer(serializers.ModelSerializer):
     """JSON serializer for rating"""
     rater = RaterSerializer()
+    song = SongSerializer()
 
     class Meta:
         model = Rating
