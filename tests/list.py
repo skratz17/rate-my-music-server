@@ -316,6 +316,24 @@ class ListTests(APITestCase):
         response = self.client.post('/lists/1/favorite')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
+    def test_has_rater_favorited_property_for_favorited_list(self):
+        self.test_create_valid_list()
+
+        self.client.post('/lists/1/favorite')
+        response = self.client.get('/lists/1')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        list = json.loads(response.content)
+        self.assertEqual(list['has_rater_favorited'], True)
+
+    def test_has_rater_favorited_property_for_unfavorited_list(self):
+        self.test_create_valid_list()
+
+        response = self.client.get('/lists/1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        list = json.loads(response.content)
+        self.assertEqual(list['has_rater_favorited'], False)
+
     def test_delete_favorite_by_invalid_list_id(self):
         response = self.client.delete('/lists/1/favorite')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
