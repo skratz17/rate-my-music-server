@@ -347,9 +347,8 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 2)
-        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
-        self.assertEqual(songs[1]['name'], 'Baby')
+        self.assertEqual(len(songs), 1)
+        self.assertEqual(songs[0]['name'], 'Baby')
 
     def test_get_all_songs_single_genre(self):
         self.test_create_valid_song()

@@ -202,7 +202,8 @@ class SongViewSet(ViewSet):
         
         if genres is not None:
             genres = genres.split(',')
-            songs = songs.filter(genres__genre_id__in=genres).distinct()
+            for genre in genres:
+                songs = songs.filter(genres__genre_id=genre).distinct()
 
         if artist is not None:
             songs = songs.filter(artist_id=artist)
