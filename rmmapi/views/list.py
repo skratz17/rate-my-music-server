@@ -161,8 +161,7 @@ class ListViewSet(ViewSet):
             lists = lists.filter(creator_id=user_id)
 
         if favorited is not None:
-            rater = Rater.objects.get(user=request.auth.user)
-            lists = lists.filter(favorites__rater=rater)
+            lists = lists.filter(favorites__rater_id=favorited)
 
         serializer = SimpleListSerializer(lists, many=True)
         return Response(serializer.data)
