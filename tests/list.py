@@ -306,6 +306,29 @@ class ListTests(APITestCase):
         self.assertEqual(len(lists), 1)
         self.assertEqual(lists[0]['name'], 'My Second List')
 
+    def test_get_all_lists_by_favorted_for_user_with_favorites(self):
+        self.test_create_valid_list()
+        self._create_second_valid_list_as_second_user()
+
+        self.client.post('/lists/1/favorite')
+        response = self.client.get('/lists?favoritedBy=2')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        lists = json.loads(response.content)
+
+        self.assertEqual(len(lists), 1)
+        self.assertEqual(lists[0]['id'], 1)
+
+    def test_get_all_lists_by_favorted_for_user_with_no_favorites(self):
+        self.test_create_valid_list()
+        self._create_second_valid_list_as_second_user()
+
+        response = self.client.get('/lists?favoritedBy=2')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        lists = json.loads(response.content)
+
+        self.assertEqual(len(lists), 0)
+
     def test_favorite_list_by_invalid_id(self):
         response = self.client.post('/lists/1/favorite')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -315,6 +338,24 @@ class ListTests(APITestCase):
 
         response = self.client.post('/lists/1/favorite')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_has_rater_favorited_property_for_favorited_list(self):
+        self.test_create_valid_list()
+
+        self.client.post('/lists/1/favorite')
+        response = self.client.get('/lists/1')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        list = json.loads(response.content)
+        self.assertEqual(list['has_rater_favorited'], True)
+
+    def test_has_rater_favorited_property_for_unfavorited_list(self):
+        self.test_create_valid_list()
+
+        response = self.client.get('/lists/1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        list = json.loads(response.content)
+        self.assertEqual(list['has_rater_favorited'], False)
 
     def test_delete_favorite_by_invalid_list_id(self):
         response = self.client.delete('/lists/1/favorite')

@@ -6,3 +6,4 @@ from .list import ListTests
 from .rating import RatingTests
 from .rater import RaterTests
 from .stats import StatsTests
+from .search import SearchTests
