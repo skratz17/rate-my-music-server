@@ -216,11 +216,16 @@ class SongViewSet(ViewSet):
 
         songs = self._sort_by_query_string_param(songs)
 
+        count = len(songs)
+
         if page is not None:
             songs = paginate(songs, page, pageSize)
 
         serializer = SongSerializer(songs, many=True)
-        return Response(serializer.data)
+        return Response({
+            "data": serializer.data,
+            "count": count
+        })
         
     def _validate(self):
         """Validate values sent in POST/PUT body - 
