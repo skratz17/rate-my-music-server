@@ -32,13 +32,13 @@ class GenreTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         genres = json.loads(response.content)
-        self.assertEqual(len(genres), 2)
+        self.assertEqual(genres['count'], 2)
 
-        self.assertEqual(genres[0]['id'], 1)
-        self.assertEqual(genres[0]['name'], 'Indie Pop')
+        self.assertEqual(genres['data'][0]['id'], 1)
+        self.assertEqual(genres['data'][0]['name'], 'Indie Pop')
 
-        self.assertEqual(genres[1]['id'], 2)
-        self.assertEqual(genres[1]['name'], 'Indie Folk')
+        self.assertEqual(genres['data'][1]['id'], 2)
+        self.assertEqual(genres['data'][1]['name'], 'Indie Folk')
 
     def test_get_all_genres_by_search_term_with_one_match(self):
         """Test getting genres by search term only one matches"""
@@ -46,7 +46,7 @@ class GenreTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         genres = json.loads(response.content)
-        self.assertEqual(len(genres), 1)
+        self.assertEqual(genres['count'], 1)
 
-        self.assertEqual(genres[0]['id'], 2)
-        self.assertEqual(genres[0]['name'], 'Indie Folk')
+        self.assertEqual(genres['data'][0]['id'], 2)
+        self.assertEqual(genres['data'][0]['name'], 'Indie Folk')

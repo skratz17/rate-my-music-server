@@ -280,9 +280,9 @@ class ListTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         lists = json.loads(response.content)
-        self.assertEqual(len(lists), 2)
-        self.assertEqual(lists[0]['name'], 'My List')
-        self.assertEqual(lists[1]['name'], 'My Second List')
+        self.assertEqual(lists['count'], 2)
+        self.assertEqual(lists['data'][0]['name'], 'My List')
+        self.assertEqual(lists['data'][1]['name'], 'My Second List')
 
     def test_get_all_lists_by_song_id(self):
         self.test_create_valid_list()
@@ -292,8 +292,8 @@ class ListTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         lists = json.loads(response.content)
-        self.assertEqual(len(lists), 1)
-        self.assertEqual(lists[0]['name'], 'My List')
+        self.assertEqual(lists['count'], 1)
+        self.assertEqual(lists['data'][0]['name'], 'My List')
 
     def test_get_all_lists_by_user_id(self):
         self.test_create_valid_list()
@@ -303,8 +303,8 @@ class ListTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         lists = json.loads(response.content)
-        self.assertEqual(len(lists), 1)
-        self.assertEqual(lists[0]['name'], 'My Second List')
+        self.assertEqual(lists['count'], 1)
+        self.assertEqual(lists['data'][0]['name'], 'My Second List')
 
     def test_get_all_lists_by_favorted_for_user_with_favorites(self):
         self.test_create_valid_list()
@@ -316,8 +316,8 @@ class ListTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         lists = json.loads(response.content)
 
-        self.assertEqual(len(lists), 1)
-        self.assertEqual(lists[0]['id'], 1)
+        self.assertEqual(lists['count'], 1)
+        self.assertEqual(lists['data'][0]['id'], 1)
 
     def test_get_all_lists_by_favorted_for_user_with_no_favorites(self):
         self.test_create_valid_list()
@@ -327,7 +327,7 @@ class ListTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         lists = json.loads(response.content)
 
-        self.assertEqual(len(lists), 0)
+        self.assertEqual(lists['count'], 0)
 
     def test_favorite_list_by_invalid_id(self):
         response = self.client.post('/lists/1/favorite')

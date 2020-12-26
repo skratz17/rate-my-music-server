@@ -211,17 +211,17 @@ class RatingTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         ratings = json.loads(response.content)
-        self.assertEqual(len(ratings), 2)
-        self.assertEqual(ratings[0]['id'], 1)
-        self.assertEqual(ratings[0]['rating'], 3)
-        self.assertEqual(ratings[0]['review'], 'So good!')
-        self.assertEqual(ratings[0]['rater']['user']['username'], 'jweckert17')
-        self.assertEqual(ratings[0]['song']['name'], 'Save a Secret for the Moon')
-        self.assertEqual(ratings[1]['id'], 2)
-        self.assertEqual(ratings[1]['rating'], 4)
-        self.assertEqual(ratings[1]['review'], 'Very good')
-        self.assertEqual(ratings[1]['rater']['user']['username'], 'test')
-        self.assertEqual(ratings[1]['song']['name'], 'Famous')
+        self.assertEqual(ratings['count'], 2)
+        self.assertEqual(ratings['data'][0]['id'], 1)
+        self.assertEqual(ratings['data'][0]['rating'], 3)
+        self.assertEqual(ratings['data'][0]['review'], 'So good!')
+        self.assertEqual(ratings['data'][0]['rater']['user']['username'], 'jweckert17')
+        self.assertEqual(ratings['data'][0]['song']['name'], 'Save a Secret for the Moon')
+        self.assertEqual(ratings['data'][1]['id'], 2)
+        self.assertEqual(ratings['data'][1]['rating'], 4)
+        self.assertEqual(ratings['data'][1]['review'], 'Very good')
+        self.assertEqual(ratings['data'][1]['rater']['user']['username'], 'test')
+        self.assertEqual(ratings['data'][1]['song']['name'], 'Famous')
 
     def test_get_all_ratings_by_user_id(self):
         self.test_create_valid_rating()
@@ -231,12 +231,12 @@ class RatingTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         ratings = json.loads(response.content)
-        self.assertEqual(len(ratings), 1)
-        self.assertEqual(ratings[0]['id'], 1)
-        self.assertEqual(ratings[0]['rating'], 3)
-        self.assertEqual(ratings[0]['review'], 'So good!')
-        self.assertEqual(ratings[0]['rater']['user']['username'], 'jweckert17')
-        self.assertEqual(ratings[0]['song']['name'], 'Save a Secret for the Moon')
+        self.assertEqual(ratings['count'], 1)
+        self.assertEqual(ratings['data'][0]['id'], 1)
+        self.assertEqual(ratings['data'][0]['rating'], 3)
+        self.assertEqual(ratings['data'][0]['review'], 'So good!')
+        self.assertEqual(ratings['data'][0]['rater']['user']['username'], 'jweckert17')
+        self.assertEqual(ratings['data'][0]['song']['name'], 'Save a Secret for the Moon')
 
     def test_get_all_ratings_by_song_id(self):
         self.test_create_valid_rating()
@@ -246,12 +246,12 @@ class RatingTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         ratings = json.loads(response.content)
-        self.assertEqual(len(ratings), 1)
-        self.assertEqual(ratings[0]['id'], 2)
-        self.assertEqual(ratings[0]['rating'], 4)
-        self.assertEqual(ratings[0]['review'], 'Very good')
-        self.assertEqual(ratings[0]['rater']['user']['username'], 'test')
-        self.assertEqual(ratings[0]['song']['name'], 'Famous')
+        self.assertEqual(ratings['count'], 1)
+        self.assertEqual(ratings['data'][0]['id'], 2)
+        self.assertEqual(ratings['data'][0]['rating'], 4)
+        self.assertEqual(ratings['data'][0]['review'], 'Very good')
+        self.assertEqual(ratings['data'][0]['rater']['user']['username'], 'test')
+        self.assertEqual(ratings['data'][0]['song']['name'], 'Famous')
 
     def test_get_all_ratings_sorted_by_rating_asc(self):
         self.test_create_valid_rating()
@@ -261,9 +261,9 @@ class RatingTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         ratings = json.loads(response.content)
-        self.assertEqual(len(ratings), 2)
-        self.assertEqual(ratings[0]['rating'], 3)
-        self.assertEqual(ratings[1]['rating'], 4)
+        self.assertEqual(ratings['count'], 2)
+        self.assertEqual(ratings['data'][0]['rating'], 3)
+        self.assertEqual(ratings['data'][1]['rating'], 4)
 
     def test_get_all_ratings_sorted_by_rating_desc(self):
         self.test_create_valid_rating()
@@ -273,9 +273,9 @@ class RatingTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         ratings = json.loads(response.content)
-        self.assertEqual(len(ratings), 2)
-        self.assertEqual(ratings[0]['rating'], 4)
-        self.assertEqual(ratings[1]['rating'], 3)
+        self.assertEqual(ratings['count'], 2)
+        self.assertEqual(ratings['data'][0]['rating'], 4)
+        self.assertEqual(ratings['data'][1]['rating'], 3)
 
     def test_get_all_ratings_sorted_by_date_asc(self):
         self.test_create_valid_rating()
@@ -285,9 +285,9 @@ class RatingTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         ratings = json.loads(response.content)
-        self.assertEqual(len(ratings), 2)
-        self.assertEqual(ratings[0]['id'], 1)
-        self.assertEqual(ratings[1]['id'], 2)
+        self.assertEqual(ratings['count'], 2)
+        self.assertEqual(ratings['data'][0]['id'], 1)
+        self.assertEqual(ratings['data'][1]['id'], 2)
 
     def test_get_all_ratings_sorted_by_date_desc(self):
         self.test_create_valid_rating()
@@ -297,9 +297,9 @@ class RatingTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         ratings = json.loads(response.content)
-        self.assertEqual(len(ratings), 2)
-        self.assertEqual(ratings[0]['id'], 2)
-        self.assertEqual(ratings[1]['id'], 1)
+        self.assertEqual(ratings['count'], 2)
+        self.assertEqual(ratings['data'][0]['id'], 2)
+        self.assertEqual(ratings['data'][1]['id'], 1)
 
     def _create_second_song_and_rating_as_second_user(self):
         # create second user and use their credentials

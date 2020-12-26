@@ -313,9 +313,9 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 2)
-        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
-        self.assertEqual(songs[1]['name'], 'Baby')
+        self.assertEqual(songs['count'], 2)
+        self.assertEqual(songs['data'][0]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs['data'][1]['name'], 'Baby')
 
     def test_get_all_songs_with_start_year(self):
         self.test_create_valid_song()
@@ -325,8 +325,8 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 1)
-        self.assertEqual(songs[0]['name'], 'Baby')
+        self.assertEqual(songs['count'], 1)
+        self.assertEqual(songs['data'][0]['name'], 'Baby')
 
     def test_get_all_songs_with_end_year(self):
         self.test_create_valid_song()
@@ -336,8 +336,8 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 1)
-        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs['count'], 1)
+        self.assertEqual(songs['data'][0]['name'], 'Save a Secret for the Moon')
 
     def test_get_all_songs_multiple_genres(self):
         self.test_create_valid_song()
@@ -347,8 +347,8 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 1)
-        self.assertEqual(songs[0]['name'], 'Baby')
+        self.assertEqual(songs['count'], 1)
+        self.assertEqual(songs['data'][0]['name'], 'Baby')
 
     def test_get_all_songs_single_genre(self):
         self.test_create_valid_song()
@@ -358,8 +358,8 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 1)
-        self.assertEqual(songs[0]['name'], 'Baby')
+        self.assertEqual(songs['count'], 1)
+        self.assertEqual(songs['data'][0]['name'], 'Baby')
 
     def test_get_all_songs_by_artist(self):
         self.test_create_valid_song()
@@ -369,8 +369,8 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 1)
-        self.assertEqual(songs[0]['name'], 'Baby')
+        self.assertEqual(songs['count'], 1)
+        self.assertEqual(songs['data'][0]['name'], 'Baby')
 
     def test_get_all_songs_by_song_name_search(self):
         self.test_create_valid_song()
@@ -380,8 +380,8 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 1)
-        self.assertEqual(songs[0]['name'], 'Baby')
+        self.assertEqual(songs['count'], 1)
+        self.assertEqual(songs['data'][0]['name'], 'Baby')
 
     def test_get_all_songs_by_artist_name_search(self):
         self.test_create_valid_song()
@@ -391,8 +391,8 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 1)
-        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs['count'], 1)
+        self.assertEqual(songs['data'][0]['name'], 'Save a Secret for the Moon')
 
     def test_get_all_songs_ordered_by_year_asc(self):
         self.test_create_valid_song()
@@ -402,9 +402,9 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 2)
-        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
-        self.assertEqual(songs[1]['name'], 'Baby')
+        self.assertEqual(songs['count'], 2)
+        self.assertEqual(songs['data'][0]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs['data'][1]['name'], 'Baby')
 
     def test_get_all_songs_ordered_by_year_desc(self):
         self.test_create_valid_song()
@@ -414,9 +414,9 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 2)
-        self.assertEqual(songs[0]['name'], 'Baby')
-        self.assertEqual(songs[1]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs['count'], 2)
+        self.assertEqual(songs['data'][0]['name'], 'Baby')
+        self.assertEqual(songs['data'][1]['name'], 'Save a Secret for the Moon')
 
     def test_get_all_songs_ordered_by_song_name(self):
         self.test_create_valid_song()
@@ -426,9 +426,9 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 2)
-        self.assertEqual(songs[0]['name'], 'Baby')
-        self.assertEqual(songs[1]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs['count'], 2)
+        self.assertEqual(songs['data'][0]['name'], 'Baby')
+        self.assertEqual(songs['data'][1]['name'], 'Save a Secret for the Moon')
 
     def test_get_all_songs_ordered_by_song_name_desc(self):
         self.test_create_valid_song()
@@ -438,9 +438,9 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 2)
-        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
-        self.assertEqual(songs[1]['name'], 'Baby')
+        self.assertEqual(songs['count'], 2)
+        self.assertEqual(songs['data'][0]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs['data'][1]['name'], 'Baby')
 
     def test_get_all_songs_ordered_by_artist_name(self):
         self.test_create_valid_song()
@@ -450,9 +450,9 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 2)
-        self.assertEqual(songs[0]['name'], 'Baby')
-        self.assertEqual(songs[1]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs['count'], 2)
+        self.assertEqual(songs['data'][0]['name'], 'Baby')
+        self.assertEqual(songs['data'][1]['name'], 'Save a Secret for the Moon')
 
     def test_get_all_songs_ordered_by_artist_name_desc(self):
         self.test_create_valid_song()
@@ -462,9 +462,9 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 2)
-        self.assertEqual(songs[0]['name'], 'Save a Secret for the Moon')
-        self.assertEqual(songs[1]['name'], 'Baby')
+        self.assertEqual(songs['count'], 2)
+        self.assertEqual(songs['data'][0]['name'], 'Save a Secret for the Moon')
+        self.assertEqual(songs['data'][1]['name'], 'Baby')
 
     def test_get_all_songs_ordered_by_avg_rating_asc(self):
         # creates song id of 1 and two ratings -> avg rating of 4
@@ -494,10 +494,10 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 3)
-        self.assertEqual(songs[0]['avg_rating'], None)
-        self.assertEqual(songs[1]['avg_rating'], 3)
-        self.assertEqual(songs[2]['avg_rating'], 4)
+        self.assertEqual(songs['count'], 3)
+        self.assertEqual(songs['data'][0]['avg_rating'], None)
+        self.assertEqual(songs['data'][1]['avg_rating'], 3)
+        self.assertEqual(songs['data'][2]['avg_rating'], 4)
 
     def test_get_all_songs_ordered_by_avg_rating_desc(self):
         # creates song id of 1 and two ratings -> avg rating of 4
@@ -527,10 +527,10 @@ class SongTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         songs = json.loads(response.content)
-        self.assertEqual(len(songs), 3)
-        self.assertEqual(songs[0]['avg_rating'], 4)
-        self.assertEqual(songs[1]['avg_rating'], 3)
-        self.assertEqual(songs[2]['avg_rating'], None)
+        self.assertEqual(songs['count'], 3)
+        self.assertEqual(songs['data'][0]['avg_rating'], 4)
+        self.assertEqual(songs['data'][1]['avg_rating'], 3)
+        self.assertEqual(songs['data'][2]['avg_rating'], None)
 
     def test_avg_rating_with_no_ratings(self):
         self.test_create_valid_song()

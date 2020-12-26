@@ -1,5 +1,6 @@
 """Song ViewSet and Serializers"""
 from django.db.models import Q
+from django.db.models.expressions import Value
 from django.db.models.functions import Lower
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -7,7 +8,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import status, serializers
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rmmapi.helpers import get_missing_keys
+from rmmapi.helpers import get_missing_keys, paginate
 from rmmapi.models import Artist, Genre, Rater, Song, SongGenre, SongSource
 
 class SongGenresSerializer(serializers.ModelSerializer):
@@ -185,6 +186,8 @@ class SongViewSet(ViewSet):
         genres = request.query_params.get('genres', None)
         artist = request.query_params.get('artist', None)
         q = request.query_params.get('q', None)
+        page = request.query_params.get('page', None)
+        pageSize = request.query_params.get('pageSize', 10)
 
         if startYear is not None:
             try:
@@ -213,8 +216,16 @@ class SongViewSet(ViewSet):
 
         songs = self._sort_by_query_string_param(songs)
 
+        count = len(songs)
+
+        if page is not None:
+            songs = paginate(songs, page, pageSize)
+
         serializer = SongSerializer(songs, many=True)
-        return Response(serializer.data)
+        return Response({
+            "data": serializer.data,
+            "count": count
+        })
         
     def _validate(self):
         """Validate values sent in POST/PUT body - 

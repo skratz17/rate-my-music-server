@@ -207,11 +207,11 @@ class ArtistTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         artists = json.loads(response.content)
-        self.assertEqual(len(artists), 1)
-        self.assertEqual(artists[0]['id'], 1)
-        self.assertEqual(artists[0]['name'], 'The Magnetic Fields')
-        self.assertEqual(artists[0]['founded_year'], 1990)
-        self.assertEqual(artists[0]['description'], 'An amazing band.')
+        self.assertEqual(artists['count'], 1)
+        self.assertEqual(artists['data'][0]['id'], 1)
+        self.assertEqual(artists['data'][0]['name'], 'The Magnetic Fields')
+        self.assertEqual(artists['data'][0]['founded_year'], 1990)
+        self.assertEqual(artists['data'][0]['description'], 'An amazing band.')
 
     def test_get_all_artists_by_matching_search_term(self):
         """Test getting all artists using the q query string parameter and a matching name"""
@@ -221,11 +221,11 @@ class ArtistTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         artists = json.loads(response.content)
-        self.assertEqual(len(artists), 1)
-        self.assertEqual(artists[0]['id'], 1)
-        self.assertEqual(artists[0]['name'], 'The Magnetic Fields')
-        self.assertEqual(artists[0]['founded_year'], 1990)
-        self.assertEqual(artists[0]['description'], 'An amazing band.')
+        self.assertEqual(artists['count'], 1)
+        self.assertEqual(artists['data'][0]['id'], 1)
+        self.assertEqual(artists['data'][0]['name'], 'The Magnetic Fields')
+        self.assertEqual(artists['data'][0]['founded_year'], 1990)
+        self.assertEqual(artists['data'][0]['description'], 'An amazing band.')
 
     def test_get_all_artists_by_non_matching_search_term(self):
         """Test getting all artists using the q query string parameter and a non-matching name"""
@@ -235,4 +235,4 @@ class ArtistTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         artists = json.loads(response.content)
-        self.assertEqual(len(artists), 0)
+        self.assertEqual(artists['count'], 0)

@@ -85,8 +85,13 @@ class ArtistViewSet(ViewSet):
         if q is not None:
             artists = self._filter_by_search_term(artists, q)
 
+        count = len(artists)
+
         serializer = ArtistSerializer(artists, many=True)
-        return Response(serializer.data)
+        return Response({
+            "data": serializer.data,
+            "count": count
+        })
 
     def _validate(self):
         """Validate values sent in POST/PUT body - 
