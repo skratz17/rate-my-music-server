@@ -6,7 +6,7 @@ from rest_framework import status, serializers
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rmmapi.models import Rating, Song, Rater
-from rmmapi.helpers import get_missing_keys
+from rmmapi.helpers import get_missing_keys, paginate
 from .rater import RaterSerializer
 from .song import SongSerializer
 
@@ -94,6 +94,8 @@ class RatingViewSet(ViewSet):
 
         user_id = request.query_params.get('userId', None)
         song_id = request.query_params.get('songId', None)
+        page = request.query_params.get('page', None)
+        pageSize = request.query_params.get('pageSize', 10)
 
         if user_id is not None:
             ratings = ratings.filter(rater_id=user_id)
@@ -102,6 +104,9 @@ class RatingViewSet(ViewSet):
             ratings = ratings.filter(song_id=song_id)
 
         ratings = self._sort_by_query_string_param(ratings)
+
+        if page is not None:
+            ratings = paginate(ratings, page, pageSize)
 
         serializer = RatingSerializer(ratings, many=True)
         return Response(serializer.data)

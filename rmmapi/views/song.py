@@ -186,7 +186,7 @@ class SongViewSet(ViewSet):
         genres = request.query_params.get('genres', None)
         artist = request.query_params.get('artist', None)
         q = request.query_params.get('q', None)
-        page = request.query_params.get('page', 1)
+        page = request.query_params.get('page', None)
         pageSize = request.query_params.get('pageSize', 10)
 
         if startYear is not None:
@@ -216,7 +216,8 @@ class SongViewSet(ViewSet):
 
         songs = self._sort_by_query_string_param(songs)
 
-        songs = paginate(songs, page, pageSize)
+        if page is not None:
+            songs = paginate(songs, page, pageSize)
 
         serializer = SongSerializer(songs, many=True)
         return Response(serializer.data)

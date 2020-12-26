@@ -6,7 +6,7 @@ from rest_framework import serializers, status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rmmapi.helpers import get_missing_keys
+from rmmapi.helpers import get_missing_keys, paginate
 from rmmapi.models import List, Song, ListSong, Rater, ListFavorite
 from .rater import RaterSerializer
 
@@ -153,6 +153,8 @@ class ListViewSet(ViewSet):
         song_id = request.query_params.get('songId', None)
         user_id = request.query_params.get('userId', None)
         favoritedBy = request.query_params.get('favoritedBy', None)
+        page = request.query_params.get('page', None)
+        pageSize = request.query_params.get('pageSize', 10)
 
         if song_id is not None:
             lists = lists.filter(songs__song_id=song_id).distinct()
@@ -162,6 +164,9 @@ class ListViewSet(ViewSet):
 
         if favoritedBy is not None:
             lists = lists.filter(favorites__rater_id=favoritedBy)
+
+        if page is not None:
+            lists = paginate(lists, page, pageSize)
 
         serializer = SimpleListSerializer(lists, many=True)
         return Response(serializer.data)
