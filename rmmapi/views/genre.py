@@ -19,8 +19,13 @@ class GenreViewSet(ViewSet):
         if q is not None:
             genres = self._filter_by_search_term(genres, q)
 
+        count = len(genres)
+
         serializer = GenreSerializer(genres, many=True)
-        return Response(serializer.data)
+        return Response({
+            "data": serializer.data,
+            "count": count
+        })
 
     def _filter_by_search_term(self, genres, q):
         """Given a Genres QuerySet, filter by those whose name contains search term q, case-insensitive"""

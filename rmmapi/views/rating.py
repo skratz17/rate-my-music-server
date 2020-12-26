@@ -105,11 +105,16 @@ class RatingViewSet(ViewSet):
 
         ratings = self._sort_by_query_string_param(ratings)
 
+        count = len(ratings)
+
         if page is not None:
             ratings = paginate(ratings, page, pageSize)
 
         serializer = RatingSerializer(ratings, many=True)
-        return Response(serializer.data)
+        return Response({
+            "data": serializer.data,
+            "count": count
+        })
 
     def _validate(self):
         """Validate values sent in POST/PUT body - 

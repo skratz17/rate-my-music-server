@@ -165,11 +165,16 @@ class ListViewSet(ViewSet):
         if favoritedBy is not None:
             lists = lists.filter(favorites__rater_id=favoritedBy)
 
+        count = len(lists)
+
         if page is not None:
             lists = paginate(lists, page, pageSize)
 
         serializer = SimpleListSerializer(lists, many=True)
-        return Response(serializer.data)
+        return Response({
+            "data": serializer.data,
+            "count": count
+        })
 
     @action(methods=['post', 'delete'], detail=True)
     def favorite(self, request, pk=None):
