@@ -6,12 +6,15 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rmmapi.helpers import get_missing_keys
 from rmmapi.models import Artist, Rater
+from .rater import RaterSerializer
 
 class ArtistSerializer(serializers.ModelSerializer):
     """JSON serializer for artist"""
+    creator = RaterSerializer()
+
     class Meta:
         model = Artist
-        fields = ('id', 'name', 'founded_year', 'description')
+        fields = ('id', 'name', 'founded_year', 'description', 'creator')
 
 class ArtistViewSet(ViewSet):
     def create(self, request):
