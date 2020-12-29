@@ -10,6 +10,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rmmapi.helpers import get_missing_keys, paginate
 from rmmapi.models import Artist, Genre, Rater, Song, SongGenre, SongSource
+from .rater import RaterSerializer
 
 class SongGenresSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,9 +20,10 @@ class SongGenresSerializer(serializers.ModelSerializer):
 
 class SongSerializer(serializers.ModelSerializer):
     genres = SongGenresSerializer(many=True)
+    creator = RaterSerializer()
     class Meta:
         model = Song
-        fields = ('id', 'name', 'year', 'artist', 'genres', 'sources', 'created_at', 'avg_rating')
+        fields = ('id', 'name', 'year', 'artist', 'genres', 'sources', 'created_at', 'avg_rating', 'creator')
         depth = 1
 
 class SongViewSet(ViewSet):
