@@ -7,7 +7,7 @@
       "artist_id": 1,
       "name": "Half-Life",
       "year": 2014,
-      "created_at": "2020-10-31T12:00:00Z"
+      "created_at": "2020-10-01T12:00:00Z"
     }
   },
   {
@@ -40,7 +40,271 @@
       "artist_id": 2,
       "name": "You and Me and the Moon",
       "year": 1996,
+      "created_at": "2020-11-12T12:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 5,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 3,
+      "name": "Desperate Man Blues",
+      "year": 1967,
+      "created_at": "2020-11-13T12:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 6,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 3,
+      "name": "Sunflower River Blues",
+      "year": 1963,
       "created_at": "2020-11-16T12:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 7,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 4,
+      "name": "Burning Airlines Give You So Much More",
+      "year": 1974,
+      "created_at": "2020-11-10T12:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 8,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 4,
+      "name": "Tal Coat",
+      "year": 1982,
+      "created_at": "2020-11-07T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 9,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 5,
+      "name": "Head Like a Hole",
+      "year": 1989,
+      "created_at": "2020-11-05T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 10,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 6,
+      "name": "That's Us (Wild Combination)",
+      "year": 2004,
+      "created_at": "2020-11-04T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 11,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 6,
+      "name": "A Little Lost",
+      "year": 1994,
+      "created_at": "2020-11-04T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 12,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 7,
+      "name": "In a Beautiful Place Out in the Country",
+      "year": 2000,
+      "created_at": "2020-11-02T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 13,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 7,
+      "name": "Aquarius",
+      "year": 1998,
+      "created_at": "2020-11-03T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 14,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 8,
+      "name": "Robin Hood Theory",
+      "year": 1998,
+      "created_at": "2020-11-01T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 15,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 9,
+      "name": "Blackout",
+      "year": 2005,
+      "created_at": "2020-11-28T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 16,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 10,
+      "name": "Suspended in Gaffa",
+      "year": 1982,
+      "created_at": "2020-11-28T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 17,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 10,
+      "name": "Cloudbusting",
+      "year": 1984,
+      "created_at": "2020-11-26T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 18,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 10,
+      "name": "Hounds of Love",
+      "year": 1984,
+      "created_at": "2020-11-25T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 19,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 11,
+      "name": "Paper Hats",
+      "year": 1981,
+      "created_at": "2020-11-24T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 20,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 12,
+      "name": "No Thing On Me (Cocaine Song)",
+      "year": 1972,
+      "created_at": "2020-11-24T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 21,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 12,
+      "name": "Back to the World",
+      "year": 1973,
+      "created_at": "2020-11-24T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 22,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 13,
+      "name": "And You and I",
+      "year": 1972,
+      "created_at": "2020-11-24T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 23,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 13,
+      "name": "South Side of the Sky",
+      "year": 1972,
+      "created_at": "2020-11-24T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 24,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 14,
+      "name": "Baby",
+      "year": 1996,
+      "created_at": "2020-11-24T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 25,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 14,
+      "name": "Neat Little Domestic Life",
+      "year": 1999,
+      "created_at": "2020-11-24T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 26,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 15,
+      "name": "Milagre Dos Peixes",
+      "year": 1973,
+      "created_at": "2020-11-21T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 27,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 15,
+      "name": "Clube Da Esquina Nº 2",
+      "year": 1972,
+      "created_at": "2020-11-20T01:00:00Z"
+    }
+  },
+  {
+    "model": "rmmapi.song",
+    "pk": 28,
+    "fields": {
+      "creator_id": 3,
+      "artist_id": 16,
+      "name": "Right Off",
+      "year": 1971,
+      "created_at": "2020-11-26T01:00:00Z"
     }
   }
 ]

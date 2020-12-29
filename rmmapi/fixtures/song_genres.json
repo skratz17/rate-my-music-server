@@ -12,7 +12,7 @@
     "pk": 2,
     "fields": {
       "song_id": 2,
-      "genre_id": 2
+      "genre_id": 1
     }
   },
   {
@@ -20,7 +20,7 @@
     "pk": 3,
     "fields": {
       "song_id": 2,
-      "genre_id": 1
+      "genre_id": 8
     }
   },
   {
@@ -37,6 +37,270 @@
     "fields": {
       "song_id": 4,
       "genre_id": 1
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 6,
+    "fields": {
+      "song_id": 5,
+      "genre_id": 8
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 7,
+    "fields": {
+      "song_id": 5,
+      "genre_id": 3
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 8,
+    "fields": {
+      "song_id": 6,
+      "genre_id": 8
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 9,
+    "fields": {
+      "song_id": 6,
+      "genre_id": 3
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 10,
+    "fields": {
+      "song_id": 7,
+      "genre_id": 14
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 11,
+    "fields": {
+      "song_id": 7,
+      "genre_id": 13
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 12,
+    "fields": {
+      "song_id": 8,
+      "genre_id": 2
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 13,
+    "fields": {
+      "song_id": 9,
+      "genre_id": 10
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 14,
+    "fields": {
+      "song_id": 10,
+      "genre_id": 1
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 15,
+    "fields": {
+      "song_id": 10,
+      "genre_id": 7
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 16,
+    "fields": {
+      "song_id": 11,
+      "genre_id": 1
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 17,
+    "fields": {
+      "song_id": 11,
+      "genre_id": 7
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 18,
+    "fields": {
+      "song_id": 12,
+      "genre_id": 6
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 19,
+    "fields": {
+      "song_id": 13,
+      "genre_id": 6
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 20,
+    "fields": {
+      "song_id": 14,
+      "genre_id": 9
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 21,
+    "fields": {
+      "song_id": 15,
+      "genre_id": 12
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 22,
+    "fields": {
+      "song_id": 16,
+      "genre_id": 13
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 23,
+    "fields": {
+      "song_id": 17,
+      "genre_id": 13
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 24,
+    "fields": {
+      "song_id": 18,
+      "genre_id": 13
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 25,
+    "fields": {
+      "song_id": 19,
+      "genre_id": 7
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 26,
+    "fields": {
+      "song_id": 19,
+      "genre_id": 15
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 27,
+    "fields": {
+      "song_id": 20,
+      "genre_id": 16
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 28,
+    "fields": {
+      "song_id": 20,
+      "genre_id": 20
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 29,
+    "fields": {
+      "song_id": 21,
+      "genre_id": 16
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 30,
+    "fields": {
+      "song_id": 21,
+      "genre_id": 19
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 31,
+    "fields": {
+      "song_id": 21,
+      "genre_id": 20
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 32,
+    "fields": {
+      "song_id": 22,
+      "genre_id": 21
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 33,
+    "fields": {
+      "song_id": 23,
+      "genre_id": 21
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 34,
+    "fields": {
+      "song_id": 24,
+      "genre_id": 1
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 35,
+    "fields": {
+      "song_id": 25,
+      "genre_id": 1
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 36,
+    "fields": {
+      "song_id": 26,
+      "genre_id": 18
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 37,
+    "fields": {
+      "song_id": 27,
+      "genre_id": 18
+    }
+  },
+  {
+    "model": "rmmapi.songgenre",
+    "pk": 38,
+    "fields": {
+      "song_id": 28,
+      "genre_id": 11
     }
   }
 ]

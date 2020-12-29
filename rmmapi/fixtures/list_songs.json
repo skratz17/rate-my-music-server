@@ -4,8 +4,8 @@
     "pk": 1,
     "fields": {
       "list_id": 1,
-      "song_id": 1,
-      "description": "Here is a masterpiece that I made."
+      "song_id": 3,
+      "description": "Here is a masterpiece that Stephin Merritt made. I think it may be my favorite Magnetic Fields song."
     }
   },
   {
@@ -13,8 +13,44 @@
     "pk": 2,
     "fields": {
       "list_id": 1,
-      "song_id": 3,
-      "description": "Here is a masterpiece that Stephin Merritt made."
+      "song_id": 10,
+      "description": "Utterly, heartbreakingly beautiful. And catchy to boot!"
+    }
+  },
+  {
+    "model": "rmmapi.listsong",
+    "pk": 3,
+    "fields": {
+      "list_id": 1,
+      "song_id": 16,
+      "description": "Seems basically impossible to pick a single favorite Kate Bush song but... if I had to it would be this one. The octave jump in her vocals in the chorus is just perfection."
+    }
+  },
+  {
+    "model": "rmmapi.listsong",
+    "pk": 4,
+    "fields": {
+      "list_id": 1,
+      "song_id": 19,
+      "description": "Scary, twisted post-punk at its very best."
+    }
+  },
+  {
+    "model": "rmmapi.listsong",
+    "pk": 5,
+    "fields": {
+      "list_id": 1,
+      "song_id": 25,
+      "description": "How about we follow up that last spooky post-punk song with of Montreal's early, queer-Beatles stuff. Isn't it just so lovely <3"
+    }
+  },
+  {
+    "model": "rmmapi.listsong",
+    "pk": 6,
+    "fields": {
+      "list_id": 1,
+      "song_id": 27,
+      "description": "A beautiful, lush, constantly driving forward instrumental."
     }
   }
 ]

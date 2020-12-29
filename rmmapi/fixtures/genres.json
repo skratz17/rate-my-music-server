@@ -3,14 +3,147 @@
     "model": "rmmapi.genre",
     "pk": 1,
     "fields": {
-      "name": "Indie Pop"
+      "name": "Indie"
     }
   },
   {
     "model": "rmmapi.genre",
     "pk": 2,
     "fields": {
-      "name": "Indie Folk"
+      "name": "Ambient"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 3,
+    "fields": {
+      "name": "Blues"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 4,
+    "fields": {
+      "name": "Classical"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 5,
+    "fields": {
+      "name": "Country"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 6,
+    "fields": {
+      "name": "Electronic"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 7,
+    "fields": {
+      "name": "Experimental"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 8,
+    "fields": {
+      "name": "Folk"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 9,
+    "fields": {
+      "name": "Hip-Hop"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 10,
+    "fields": {
+      "name": "Industrial"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 11,
+    "fields": {
+      "name": "Jazz"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 12,
+    "fields": {
+      "name": "Metal"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 13,
+    "fields": {
+      "name": "Pop"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 14,
+    "fields": {
+      "name": "Rock"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 15,
+    "fields": {
+      "name": "Punk"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 16,
+    "fields": {
+      "name": "R&B"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 17,
+    "fields": {
+      "name": "Singer / Songwriter"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 18,
+    "fields": {
+      "name": "International"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 19,
+    "fields": {
+      "name": "Funk"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 20,
+    "fields": {
+      "name": "Soul"
+    }
+  },
+  {
+    "model": "rmmapi.genre",
+    "pk": 21,
+    "fields": {
+      "name": "Progressive Rock"
     }
   }
 ]

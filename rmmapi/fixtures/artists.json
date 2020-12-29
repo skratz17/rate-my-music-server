@@ -15,8 +15,162 @@
     "pk": 2,
     "fields": {
       "name": "The Magnetic Fields",
-      "description": "Actually way better than KT.",
+      "description": "The Magnetic Fields (named after the André Breton/Philippe Soupault novel Les Champs Magnétiques)[1] are an American band founded and led by Stephin Merritt. Merritt is the group's primary songwriter, producer, and vocalist, as well as frequent multi-instrumentalist. The Magnetic Fields is essentially a vehicle for Merritt's songwriting, as are various side-projects including The 6ths, Future Bible Heroes, and The Gothic Archies. Merritt's recognizable lyrics are often about love and with atypical or neutral gender roles, and are by turns ironic, tongue-in-cheek, bitter, and humorous.",
       "founded_year": 1990,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 3,
+    "fields": {
+      "name": "John Fahey",
+      "description": "John Aloysius Fahey (/ˈfeɪhi/ FAY-hee;[1] February 28, 1939 – February 22, 2001) was an American fingerstyle guitarist and composer who played the steel-string acoustic guitar as a solo instrument. His style has been enormously influential and has been described as the foundation of the genre of American primitive guitar, a term borrowed from painting and referring mainly to the self-taught nature of the music and its minimalist style. Fahey borrowed from the folk and blues traditions in American roots music, having compiled many forgotten early recordings in these genres. He would later incorporate 20th-century classical, Portuguese, Brazilian, and Indian influences into his work.[2]",
+      "founded_year": 1939,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 4,
+    "fields": {
+      "name": "Brian Eno",
+      "description": "Brian Peter George St John le Baptiste de la Salle Eno RDI (/ˈiːnoʊ/; born Brian Peter George Eno; 15 May 1948) is an English musician, record producer, visual artist, and theorist best known for his work in ambient music and contributions to rock, pop and electronica.[1] A self-described \"non-musician\", Eno has helped introduce unique conceptual approaches and recording techniques to contemporary music.[1][2] He has been described as one of popular music's most influential and innovative figures.",
+      "founded_year": 1948,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 5,
+    "fields": {
+      "name": "Nine Inch Nails",
+      "description": "Nine Inch Nails, commonly abbreviated as NIN and stylized as NIИ, is an American industrial rock band formed in 1988 in Cleveland, Ohio. Singer, songwriter, multi-instrumentalist, and producer Trent Reznor was the only permanent member of the band until the official addition of English musician Atticus Ross in 2016. The band's debut album, Pretty Hate Machine (1989), was released via TVT Records. After feuding with TVT about how to promote the album, Reznor signed with Interscope Records and released the EP Broken (1992). The following Nine Inch Nails albums, The Downward Spiral (1994) and The Fragile (1999), were released to critical acclaim and commercial success. ",
+      "founded_year": 1988,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 6,
+    "fields": {
+      "name": "Arthur Russell",
+      "description": "Arthur Russell (born Charles Arthur Russell Jr.; May 21, 1951 – April 4, 1992)[2][3] was an American cellist, composer, producer, singer, and musician from Iowa, whose work spanned a disparate range of styles. Trained in contemporary experimental composition and Indian classical music, Russell relocated to New York in the mid-1970s, where he became associated with Lower Manhattan's avant-garde community as well as the city's disco scene.[2]",
+      "founded_year": 1951,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 7,
+    "fields": {
+      "name": "Boards of Canada",
+      "description": "Boards of Canada are a Scottish electronic music duo consisting of brothers Michael Sandison and Marcus Eoin.[2][3] Signing to Skam and then Warp Records in the 1990s, the duo received recognition following the release of their debut album Music Has the Right to Children in 1998.[2][4] Their subsequent albums, Geogaddi (2002), The Campfire Headphase (2005) and Tomorrow's Harvest (2013), have received critical praise. They have remained reclusive, rarely giving interviews or performing live.[2]",
+      "founded_year": 1986,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 8,
+    "fields": {
+      "name": "Gang Starr",
+      "description": "Gang Starr was an American hip hop group, consisting of DJ/producer DJ Premier and MC Guru, who died in 2010.[1] Some of their top hits include \"Mass Appeal\", \"Take It Personal\", \"Moment of Truth\" and \"Above The Clouds\".[2] Gang Starr was at its height from 1989 to 2003, and are considered one of the best MC-and-producer duos in hip hop history.[3][4] They are also recognized for being one of the pioneers of jazz rap.[4]",
+      "founded_year": 1986,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 9,
+    "fields": {
+      "name": "Boris",
+      "description": "Boris (ボリス, Borisu) is a Japanese experimental music band formed in 1992 in Tokyo and composed of drummer Atsuo, guitarist/bassist Takeshi, and guitarist/keyboardist Wata. All three members participate in vocal performance. Boris has released more than twenty studio albums on various labels around the world, as well as a wide variety of live albums, compilations, EPs, singles, and collaborative albums. They have collaborated with acts such as Sunn O))), Merzbow, and Keiji Haino.",
+      "founded_year": 1992,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 10,
+    "fields": {
+      "name": "Kate Bush",
+      "description": "Catherine Bush CBE (born 30 July 1958) is an English singer, songwriter, musician, dancer and record producer. In 1978, aged 19, she topped the UK Singles Chart for four weeks with her debut single \"Wuthering Heights\", becoming the first female artist to achieve a UK number one with a self-written song. Bush has since released 25 UK Top 40 singles, including the Top 10 hits \"The Man with the Child in His Eyes\", \"Babooshka\", \"Running Up That Hill\", \"Don't Give Up\" (a duet with Peter Gabriel), and \"King of the Mountain\". All 10 of her studio albums reached the UK Top 10, including the UK number one albums Never for Ever (1980), Hounds of Love (1985), and the compilation The Whole Story (1986). She was the first British solo female artist to top the UK album charts and the first female artist to enter the album chart at number one.",
+      "founded_year": 1958,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 11,
+    "fields": {
+      "name": "This Heat",
+      "description": "This Heat were an English experimental rock band, formed in early 1976 in Camberwell, London by multi-instrumentalists Charles Bullen (guitar, clarinet, viola, vocals, tapes), Charles Hayward (drums, keyboards, vocals, tapes) and Gareth Williams (keyboard, guitar, bass, vocals, tapes).",
+      "founded_year": 1976,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 12,
+    "fields": {
+      "name": "Curtis Mayfield",
+      "description": "Curtis Lee Mayfield (June 3, 1942 – December 26, 1999) was an American singer-songwriter, guitarist, and record producer, and one of the most influential musicians behind soul and politically conscious African-American music.[1][2] He first achieved success and recognition with the Rock and Roll Hall of Fame-inducted group The Impressions during the civil rights movement of the late 1950s and 1960s, and later worked as a solo artist.",
+      "founded_year": 1942,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 13,
+    "fields": {
+      "name": "Yes",
+      "description": "Yes are an English progressive rock band formed in London in 1968 by singer Jon Anderson, bassist Chris Squire, guitarist Peter Banks, keyboardist Tony Kaye, and drummer Bill Bruford. The band has undergone numerous formations throughout its history; nineteen musicians have been full-time members. Since June 2015, it has consisted of guitarist Steve Howe, drummer Alan White, keyboardist Geoff Downes, singer Jon Davison, and bassist Billy Sherwood. Yes have explored several musical styles over the years, and are most notably regarded as progressive rock pioneers.",
+      "founded_year": 1968,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 14,
+    "fields": {
+      "name": "of Montreal",
+      "description": "of Montreal is an American indie pop band from Athens, Georgia. It was founded by frontperson Kevin Barnes in 1996, named after a failed romance between Barnes and a woman \"of Montreal.\" The band is identified as part of the Elephant 6 collective. Throughout its existence, of Montreal's musical style has evolved considerably and drawn inspiration from 1960s psychedelic pop acts.",
+      "founded_year": 1996,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 15,
+    "fields": {
+      "name": "Milton Nascimento",
+      "description": "Milton Nascimento (Portuguese pronunciation: ['miwtõ nasiˈmẽtu]; born October 26, 1942) is a prominent Brazilian singer-songwriter and guitarist.",
+      "founded_year": 1942,
+      "creator_id": 3
+    }
+  },
+
+  {
+    "model": "rmmapi.artist",
+    "pk": 16,
+    "fields": {
+      "name": "Miles Davis",
+      "description": "Miles Dewey Davis III (May 26, 1926 – September 28, 1991) was an American jazz trumpeter, bandleader, and composer. He is among the most influential and acclaimed figures in the history of jazz and 20th-century music. Davis adopted a variety of musical directions in a five-decade career that kept him at the forefront of many major stylistic developments in jazz.[1]",
+      "founded_year": 1926,
       "creator_id": 3
     }
   }

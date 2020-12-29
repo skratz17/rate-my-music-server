@@ -38,5 +38,255 @@
       "service": "YouTube",
       "is_primary": true
     }
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 5,
+    "fields": {
+      "song_id": 4,
+      "url": "https://soundcloud.com/themagneticfields/you-and-me-and-the-moon-1",
+      "service": "SoundCloud",
+      "is_primary": false
+    }
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 6,
+    "fields": {
+      "song_id": 5,
+      "url": "https://www.youtube.com/watch?v=UhgqCUDMulo",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 7,
+    "fields": {
+      "song_id": 6,
+      "url": "https://www.youtube.com/watch?v=nLsh_4D_rMs",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 8,
+    "fields": {
+      "song_id": 7,
+      "url": "https://www.youtube.com/watch?v=wIfo8PsXMK8",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 9,
+    "fields": {
+      "song_id": 8,
+      "url": "https://www.youtube.com/watch?v=10uVS6ssCxU",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 10,
+    "fields": {
+      "song_id": 9,
+      "url": "https://www.youtube.com/watch?v=ZdFaadxJl4g",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 11,
+    "fields": {
+      "song_id": 10,
+      "url": "https://www.youtube.com/watch?v=QY6nNFenaa0",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 12,
+    "fields": {
+      "song_id": 11,
+      "url": "https://www.youtube.com/watch?v=MXH1Fk-EDFo",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 13,
+    "fields": {
+      "song_id": 12,
+      "url": "https://www.youtube.com/watch?v=XrjvFzH2ALM",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 14,
+    "fields": {
+      "song_id": 13,
+      "url": "https://www.youtube.com/watch?v=rRcr5hYCxh0",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 15,
+    "fields": {
+      "song_id": 14,
+      "url": "https://www.youtube.com/watch?v=JavNAHmzw-o",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 16,
+    "fields": {
+      "song_id": 15,
+      "url": "https://www.youtube.com/watch?v=guR3bizlWhI",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 17,
+    "fields": {
+      "song_id": 16,
+      "url": "https://www.youtube.com/watch?v=ADnPNTlqiwQ",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 18,
+    "fields": {
+      "song_id": 17,
+      "url": "https://www.youtube.com/watch?v=YGPm0u53vWw",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 19,
+    "fields": {
+      "song_id": 18,
+      "url": "https://www.youtube.com/watch?v=QJAtb3_m2Vc",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 20,
+    "fields": {
+      "song_id": 19,
+      "url": "https://www.youtube.com/watch?v=DkiK_YHxv0I",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 21,
+    "fields": {
+      "song_id": 20,
+      "url": "https://www.youtube.com/watch?v=uISHLcdD1cE",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 22,
+    "fields": {
+      "song_id": 21,
+      "url": "https://www.youtube.com/watch?v=g2udbdAmdkc",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 23,
+    "fields": {
+      "song_id": 22,
+      "url": "https://www.youtube.com/watch?v=IwpB6b6mhUM",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 24,
+    "fields": {
+      "song_id": 23,
+      "url": "https://www.youtube.com/watch?v=9fr7aC1r8qw",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 25,
+    "fields": {
+      "song_id": 24,
+      "url": "https://www.youtube.com/watch?v=-NaiohCukOI",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 26,
+    "fields": {
+      "song_id": 25,
+      "url": "https://www.youtube.com/watch?v=c-d8Q4PcLUQ",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 27,
+    "fields": {
+      "song_id": 26,
+      "url": "https://www.youtube.com/watch?v=ds2SiN28uvY",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 28,
+    "fields": {
+      "song_id": 27,
+      "url": "https://www.youtube.com/watch?v=Lexd2xvMpxY",
+      "service": "YouTube",
+      "is_primary": true
+    } 
+  },
+  {
+    "model": "rmmapi.songsource",
+    "pk": 29,
+    "fields": {
+      "song_id": 28,
+      "url": "https://www.youtube.com/watch?v=3U_jem9q_mg",
+      "service": "YouTube",
+      "is_primary": true
+    } 
   }
 ]
