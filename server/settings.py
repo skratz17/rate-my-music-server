@@ -25,7 +25,7 @@ SECRET_KEY = 'xh#w#dssgnmwhg!a@#d$d7@_7+456ob)oh9&-!^c2d@+#=412n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 'localhost', 'skratz17.pythonanywhere.com' ]
 
 
 # Application definition
