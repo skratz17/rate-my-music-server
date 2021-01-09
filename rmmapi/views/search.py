@@ -20,6 +20,10 @@ class SearchViewSet(ViewSet):
             songs = Song.objects.filter(name__icontains=search_term)
             lists = List.objects.filter(name__icontains=search_term)
 
+        artists = artists[0:25]
+        songs = songs[0:25]
+        lists = lists[0:25]
+
         artists_data = ArtistSerializer(artists, many=True)
         songs_data = SongSerializer(songs, many=True)
         lists_data = SimpleListSerializer(lists, many=True)
