@@ -291,7 +291,10 @@ class SongViewSet(ViewSet):
             # or ascending, by default
             direction = self.request.query_params.get('direction', 'asc')
             if direction == 'desc':
-                order_field = '-' + order_field
+                if order_by == 'name' or order_by == 'artist':
+                    order_field = order_field.desc()
+                else:
+                    order_field = '-' + order_field
 
             # add annotation for average_rating to sort by computed property
             if order_by == 'avgRating':
