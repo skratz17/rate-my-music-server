@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rmmapi.models import Genre
+from rmmapi.helpers import paginate
 
 class GenreSerializer(serializers.ModelSerializer):
     """JSON serializer for genre"""
@@ -16,10 +17,16 @@ class GenreViewSet(ViewSet):
         genres = Genre.objects.all()
 
         q = request.query_params.get('q', None)
+        page = request.query_params.get('page', None)
+        pageSize = request.query_params.get('pageSize', 10)
+
         if q is not None:
             genres = self._filter_by_search_term(genres, q)
 
         count = len(genres)
+
+        if page is not None:
+            genres = paginate(genres, page, pageSize)
 
         serializer = GenreSerializer(genres, many=True)
         return Response({

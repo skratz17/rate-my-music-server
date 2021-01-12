@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import status, serializers
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rmmapi.helpers import get_missing_keys
+from rmmapi.helpers import get_missing_keys, paginate
 from rmmapi.models import Artist, Rater
 from .rater import RaterSerializer
 
@@ -84,11 +84,16 @@ class ArtistViewSet(ViewSet):
         artists = Artist.objects.all()
 
         q = request.query_params.get('q', None)
+        page = request.query_params.get('page', None)
+        pageSize = request.query_params.get('pageSize', 10)
 
         if q is not None:
             artists = self._filter_by_search_term(artists, q)
 
         count = len(artists)
+
+        if page is not None:
+            artists = paginate(artists, page, pageSize)
 
         serializer = ArtistSerializer(artists, many=True)
         return Response({
